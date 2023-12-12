@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/09 01:26:47 by oredoine         ###   ########.fr       */
+/*   Updated: 2023/12/12 18:37:35 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,45 @@
 
 #define TILE_SIZE 32
 #define NUM_ROWS 11
-#define NUM_COLS 15 
+#define NUM_COLS 15
+#define PI 3.14159265359
 
+#define WINDOW_HEIGHT TILE_SIZE *NUM_ROWS
+#define WINDOW_WIDTH TILE_SIZE *NUM_COLS
 
-#define WINDOW_HEIGHT TILE_SIZE * NUM_ROWS
-#define WINDOW_WIDTH TILE_SIZE * NUM_COLS
+typedef enum directions
+{
+    LEFT,
+    RIGHT,
+    BACK,
+    FRONT
+} t_directions;
 
-typedef struct s_data {
+typedef struct s_data
+{
+    void *mlx_new_window;
+    void *img_ptr;
+    char *addr_ptr;
+    int bits_per_pixel;
+    int size_line;
+    int endian;
+    void *mlx;
 
-	void			*mlx_new_window;
-	void			*mlx;
+} t_data;
 
-}	t_data;
+typedef struct s_tile
+{
+    int tile_x;
+    int tile_y;
+    int tile_color;
+} t_tile;
 
-
-
+typedef struct s_player
+{
+    int x;
+    int y;
+    t_directions facing;
+    int raduis;
+} t_player;
 
 #endif

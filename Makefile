@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 NAME = cub
 GREEN = \033[32m
 COLOR_OFF = \033[0m

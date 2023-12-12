@@ -17,7 +17,7 @@ Resources:
 
 # things to note
 
--> watch pikuma videos   
+-> watch pikuma videos
 -> reviser les relations de : tan / cos / sin
 -> les limites de tan a gauche et a droite de pi/2(use desmos.com)
                                  
