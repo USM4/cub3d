@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 13:47:40 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/14 02:11:29 by oredoine         ###   ########.fr       */
+/*   Updated: 2023/12/14 22:46:48 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,46 @@ void draw_rect(t_data *data, int x, int y, int width, int height, int color)
             j++;
         }
         i++;
+    }
+}
+
+int my_own_round(float num)
+{
+    double fractional_part;
+
+    fractional_part = num - (int) num;
+    if(fractional_part >= 0.5)
+        return((int)(num + 1.0));
+    else
+        return((int)num);
+}
+
+int my_own_abs(int num)
+{
+    if (num < 0)
+        num *= -1;
+    return(num);
+}
+
+void draw_line_dda(t_data *data, int x1, int x2, int y1, int y2)
+{
+    data->line.diff_x = x2 - x1;
+    data->line.diff_y = y2 - y1;
+    data->line.steps = my_own_abs(data->line.diff_x) > my_own_abs(data->line.diff_y) ? my_own_abs(data->line.diff_x) : my_own_abs(data->line.diff_y);
+    data->line.x_increment = (float)(data->line.diff_x) / (float)(data->line.steps);
+    data->line.y_increment = (float)data->line.diff_y / (float)data->line.steps;
+    data->line.x = (float)x1;
+    data->line.y = (float)y1;
+    my_mlx_pixel_put(data, my_own_round(data->line.x), my_own_round(data->line.y), 0xFF0000);
+    printf("steps = %d\n", data->line.steps);
+    while(data->line.steps > 0)
+    {
+        data->line.x += data->line.x_increment;
+        data->line.y += data->line.y_increment;
+        printf("X = %d\n",  my_own_round(data->line.x));
+        printf("Y = %d\n",  my_own_round(data->line.y));
+        my_mlx_pixel_put(data, my_own_round(data->line.x), my_own_round(data->line.y), 0xFF0000);
+        data->line.steps--;
     }
 }
 
@@ -102,6 +142,8 @@ int main()
     data.addr_ptr = mlx_get_data_addr(data.img_ptr, &data.bits_per_pixel, &data.size_line, &data.endian);
     int i = 0;
     int j;
+    int x;
+    int y;
     while (i < NUM_ROWS)
     {
         j = 0;
@@ -114,6 +156,8 @@ int main()
             {
                 draw_rect(&data, infos.tile_x, infos.tile_y, TILE_SIZE, TILE_SIZE, 0x0);
                 infos.tile_color = 0xFFFFFF;
+                x = infos.tile_x + 2 * (TILE_SIZE / 3);
+                y = infos.tile_y + 2 * (TILE_SIZE / 3);
                 draw_rect(&data, infos.tile_x + (TILE_SIZE / 3), infos.tile_y + (TILE_SIZE / 3), TILE_SIZE / 3, TILE_SIZE / 3, infos.tile_color);
             }
             else
@@ -122,11 +166,11 @@ int main()
         }
         i++;
     }
+    draw_line_dda(&data, x, WINDOW_WIDTH - 1, y, WINDOW_HEIGHT - 1);
     if (!mlx_hook(data.mlx_new_window, 2, 0L, handle_keypress, &data))
         return((perror("mlx hook failure")), 1);
     if (!mlx_hook(data.mlx_new_window, 3, 0, handle_keyrelease, &data))
         return((perror("mlx hook failure")), 1);
-    
     mlx_put_image_to_window(data.mlx, data.mlx_new_window, data.img_ptr, 0, 0);
     mlx_loop(data.mlx);
 }

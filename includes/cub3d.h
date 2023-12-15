@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/14 01:34:44 by oredoine         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:36:22 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define CUB3D_H
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <mlx.h>
 #include <unistd.h>
 
@@ -43,6 +44,17 @@ typedef struct s_tile
     int tile_color;
 } t_tile;
 
+typedef struct s_dda
+{
+    float x;
+    float y;
+    int     diff_x;
+    int     diff_y;
+    int     steps;
+    float   x_increment;
+    float   y_increment;
+}   t_dda;
+
 typedef struct s_data
 {
     void *mlx_new_window;
@@ -55,6 +67,7 @@ typedef struct s_data
     t_player player;
     char map[11][15];
     t_tile tile;
+    t_dda  line; 
 } t_data;
 
 
