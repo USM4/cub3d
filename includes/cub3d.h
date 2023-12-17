@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/17 02:42:32 by oredoine         ###   ########.fr       */
+/*   Updated: 2023/12/17 05:48:13 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_player
     double x;
     double y;
     double speed;
+    double move_step;
     int turn_direction;
     int walk_direction;
     double  rotation_angle;

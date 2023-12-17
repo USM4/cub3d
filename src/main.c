@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 13:47:40 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/17 05:38:55 by oredoine         ###   ########.fr       */
+/*   Updated: 2023/12/17 06:15:29 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,6 @@ int	handle_keypress(int keycode, t_data *data)
         data->player.rotation_angle += data->player.turn_direction * data->player.rotation_speed;
         // printf("dkhlt l LEFT -> %f\n", data->player.rotation_angle);
         printf("new position: %f\n", data->player.x + (cos(data->player.rotation_angle) * 30));
-    
-        // DDA(data, data->player.x, data->player.y, data->player.x + cos(data->player.rotation_angle) * 30 ,  data->player.y + sin(data->player.rotation_angle) * 30, 0xff0000);
 	}
 	else if (keycode == 124)
 	{
@@ -120,17 +118,18 @@ int	handle_keypress(int keycode, t_data *data)
         // printf("dkhlt l RIGHT -> %f\n", data->player.rotation_angle);
         // printf("old position: %f\n", data->player.x);
         printf("new position: %f\n", data->player.x + (cos(data->player.rotation_angle) * 30));
-        // DDA(data,  data->player.x, data->player.y, data->player.x + cos(data->player.rotation_angle) * 30, data->player.y + sin(data->player.rotation_angle) * 30, 0xff0000);
 	}
 	else if (keycode == 125)
 	{
         data->player.walk_direction = -1;
-        printf("BACK : %d\n", data->player.walk_direction);
+        data->player.move_step += data->player.walk_direction * data->player.speed;
+        printf("MOVE STEP : %f\n", data->player.move_step);
 	}
 	else if (keycode == 126)
 	{
 		data->player.walk_direction = 1;
-        printf("FRONT : %d\n", data->player.walk_direction);
+        data->player.move_step += data->player.walk_direction * data->player.speed;
+        printf("MOVE STEP : %f\n", data->player.move_step);
 	}
     
     return(0);
@@ -147,10 +146,14 @@ int	handle_keyrelease(int keycode, t_data *data)
 int update_render(t_data *data)
 {
     mlx_clear_window(data->mlx, data->mlx_new_window);
-    DDA(data, data->player.x, data->player.y, data->player.x + cos(data->player.rotation_angle) * 30, data->player.y + sin(data->player.rotation_angle) * 30, 0xfffff);
+    draw_rect(data, data->player.x + cos(data->player.rotation_angle) * (data->player.move_step),\
+    data->player.y + sin(data->player.rotation_angle) * (data->player.move_step),TILE_SIZE / 3, TILE_SIZE / 3 , 0xffffff);
     mlx_put_image_to_window(data->mlx, data->mlx_new_window, data->img_ptr, 0, 0);
+    DDA(data, data->player.x, data->player.y, data->player.x + cos(data->player.rotation_angle) * 30, data->player.y + sin(data->player.rotation_angle) * 30, 0xfffff);
     return(0);
 }
+
+
 int main()
 {
     t_data data;
@@ -167,8 +170,8 @@ int main()
         {'1', '1', '1', '1', '1', '1', '0', '0', '0', '1', '1', '1', '1', '0', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'}};
-    data.player= (t_player) {.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2, 
-    .speed = 1.5 ,  .turn_direction = 0, .walk_direction = 0, .rotation_angle = PI / 2 , .rotation_speed = 2 * (PI / 180) };
+    data.player= (t_player) {.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2, .move_step = 0,
+    .speed = 1.5 ,  .turn_direction = 0, .walk_direction = 0, .rotation_angle = PI / 2 , .rotation_speed = 5 * (PI / 180)};
     data.mlx = mlx_init();
         data.mlx_new_window = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "USM4");
     data.img_ptr = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
