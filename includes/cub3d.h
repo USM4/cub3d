@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/14 19:36:22 by oredoine         ###   ########.fr       */
+/*   Updated: 2023/12/17 02:42:32 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <mlx.h>
+#include <math.h>
 #include <unistd.h>
 
 #define TILE_SIZE 32
@@ -23,24 +24,25 @@
 #define NUM_COLS 15
 #define PI 3.14159265359
 
+
 #define WINDOW_HEIGHT TILE_SIZE * NUM_ROWS
 #define WINDOW_WIDTH TILE_SIZE * NUM_COLS
 
 typedef struct s_player
 {
-    int x;
-    int y;
-    float speed;
+    double x;
+    double y;
+    double speed;
     int turn_direction;
     int walk_direction;
-    int rotation_angle;
-    int rotation_speed;
+    double  rotation_angle;
+    double  rotation_speed;
 } t_player;
 
 typedef struct s_tile
 {
-    int tile_x;
-    int tile_y;
+    double tile_x;
+    double tile_y;
     int tile_color;
 } t_tile;
 
