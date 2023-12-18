@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 NAME = cub
 GREEN = \033[32m
 COLOR_OFF = \033[0m
-SOURCES = ./src/main.c
+SOURCES = ./src/main.c ./src/utils.c
 INCLUDES =  ./includes/cub3d.h
 OBJECTS = $(SOURCES:.c=.o)
 
