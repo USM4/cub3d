@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 00:19:17 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/18 01:23:02 by oredoine         ###   ########.fr       */
+/*   Updated: 2023/12/18 22:26:37 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void draw_rect(t_data *data, int x, int y, int width, int height, int color)
     }
 }
 
-int my_own_round(float num)
+int my_own_round(double num)
 {
     double fractional_part;
 

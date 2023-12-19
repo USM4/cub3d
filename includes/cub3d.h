@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/18 01:22:19 by oredoine         ###   ########.fr       */
+/*   Updated: 2023/12/18 22:31:20 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 #define NUM_ROWS 11
 #define NUM_COLS 15
 #define PI 3.14159265359
-
-
 #define WINDOW_HEIGHT TILE_SIZE * NUM_ROWS
 #define WINDOW_WIDTH TILE_SIZE * NUM_COLS
 
@@ -75,7 +73,7 @@ typedef struct s_data
 
 extern void    my_mlx_pixel_put(t_data *data, int x, int y, int color);
 extern void    draw_rect(t_data *data, int x, int y, int width, int height, int color);
-extern int     my_own_round(float num);
+extern int     my_own_round(double num);
 extern int     my_own_abs(int num);
 extern void    cpy_map(t_data *data, char map[NUM_ROWS][NUM_COLS]);
 

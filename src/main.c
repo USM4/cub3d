@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 13:47:40 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/18 01:54:15 by oredoine         ###   ########.fr       */
+/*   Updated: 2023/12/19 01:30:45 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,38 +36,15 @@ void draw_line_dda(t_data *data, double x1, double y1, double x2, double y2, int
 int handle_keypress(int keycode, t_data *data)
 {
     if (keycode == 123)
-    {
         data->player.turn_direction = -1;
-        // printf("rotation angle 9bl -> %f\n", data->player.rotation_angle);
-        data->player.rotation_angle += data->player.turn_direction * data->player.rotation_speed;
-        // printf("dkhlt l LEFT -> %f\n", data->player.rotation_angle);
-        printf("new position: %f\n", data->player.x + (cos(data->player.rotation_angle) * 30));
-    }
-    else if (keycode == 124)
-    {
+    if (keycode == 124)
         data->player.turn_direction = 1;
-        // printf("rotation angle 9bl -> %f\n", data->player.rotation_angle);
-        data->player.rotation_angle += data->player.turn_direction * data->player.rotation_speed;
-        // printf("dkhlt l RIGHT -> %f\n", data->player.rotation_angle);
-        // printf("old position: %f\n", data->player.x);
-        printf("new position: %f\n", data->player.x + (cos(data->player.rotation_angle) * 30));
-    }
-    else if (keycode == 125)
-    {
+    if (keycode == 125)
         data->player.walk_direction = -1;
-        data->player.move_step += data->player.walk_direction * data->player.speed;
-        data->player.x += cos(data->player.rotation_angle) * (data->player.move_step);
-        data->player.y +=  data->player.y + sin(data->player.rotation_angle) * (data->player.move_step);
-        printf("MOVE STEP : %f\n", data->player.move_step);
-    }
-    else if (keycode == 126)
-    {
+    if (keycode == 126)
         data->player.walk_direction = 1;
-        data->player.move_step += data->player.walk_direction * data->player.speed;
-        data->player.x += cos(data->player.rotation_angle) * (data->player.move_step);
-        data->player.y +=  data->player.y + sin(data->player.rotation_angle) * (data->player.move_step);
-        printf("MOVE STEP : %f\n", data->player.move_step);
-    }
+    if(keycode == 53)
+        exit(0);
 
     return (0);
 }
@@ -76,16 +53,36 @@ int handle_keyrelease(int keycode, t_data *data)
 {
     if (keycode == 123 || keycode == 124)
         data->player.turn_direction = 0;
-    else if (keycode == 125 || keycode == 126)
+    if (keycode == 125 || keycode == 126)
+    {
         data->player.walk_direction = 0;
+        data->player.move_step = 0;
+    }
     return (0);
 }
-
+void draw_player(t_data *data)
+{
+    int i;
+    int j;
+    // t_tile infos;
+    i = 0;
+    while (i < NUM_ROWS)
+    {
+        j = 0;
+        while (j < NUM_COLS)
+        {
+            if (data->map[i][j] == 'S')
+                draw_rect(data, data->player.x, data->player.y,  TILE_SIZE / 3, TILE_SIZE / 3, 0xffffff);
+            j++;
+        }
+        i++;
+    }
+    
+}
 void draw_scene(t_data *data)
 {
     int i;
     int j;
-
     i = 0;
     while (i < NUM_ROWS)
     {
@@ -95,26 +92,52 @@ void draw_scene(t_data *data)
             data->tile.tile_x = j * TILE_SIZE;
             data->tile.tile_y = i * TILE_SIZE;
             data->tile.tile_color = (data->map[i][j] == '1' ? 0x000066 : 0x0);
-            if (data->map[i][j] == 'S')
-            {
-                draw_rect(data, data->tile.tile_x, data->tile.tile_y, TILE_SIZE, TILE_SIZE, 0x0);
-                draw_rect(data, data->player.x, data->player.y, TILE_SIZE / 3, TILE_SIZE / 3, 0xFFFFFF);
-            }
-            else
-                draw_rect(data, data->tile.tile_x, data->tile.tile_y, TILE_SIZE, TILE_SIZE, data->tile.tile_color);
+            draw_rect(data, data->tile.tile_x, data->tile.tile_y, TILE_SIZE, TILE_SIZE, data->tile.tile_color);
             j++;
         }
         i++;
     }
 }
 
+int check_is_wall(double x, double y, t_data *data)
+{
+    int i;
+    int j;
+    x /= TILE_SIZE;
+    y /= TILE_SIZE;
+    i = floor(y);
+    printf("x : %f\n", x);
+    j = floor(x);
+    printf("j : %d\n", j);
+
+    // printf("map: %c\n", data->map[i][j]);
+
+    if(i >= NUM_ROWS || j >= NUM_COLS || i < 0 || j < 0 ||  data->map[i][j] == '1')
+        return(1);
+    return(0);
+}
+
+void update_position(t_data *data)
+{
+    printf("move step fdkhla dl update %f = \n" ,data->player.move_step);
+    data->player.rotation_angle += data->player.turn_direction * data->player.rotation_speed;
+    if(!check_is_wall(data->player.x , data->player.y, data)
+    && !check_is_wall(data->player.x + (cos(data->player.rotation_angle) * (data->player.move_step)),\
+    data->player.y + ( sin(data->player.rotation_angle) * (data->player.move_step)), data) )
+    {
+        data->player.move_step += data->player.walk_direction * data->player.speed;
+        data->player.x += cos(data->player.rotation_angle) * (data->player.move_step);    
+        data->player.y += sin(data->player.rotation_angle) * (data->player.move_step);
+    }
+}
+
 int update_render(t_data *data)
 {
+    update_position(data);
     mlx_clear_window(data->mlx, data->mlx_new_window);
     draw_scene(data);
-    // draw_line_dda (data,  data->player.x, data->player.y, (WINDOW_WIDTH / 2), (WINDOW_HEIGHT / 2), 0xff0111);
-//     draw_rect(data, ,
-//    ,TILE_SIZE / 3, TILE_SIZE / 3 , 0xffffff);
+    draw_player(data);
+    // draw_rect(data, data->player.x , data->player.y ,TILE_SIZE / 3, TILE_SIZE / 3 , 0xffffff);
     draw_line_dda(data, data->player.x, data->player.y, data->player.x + cos(data->player.rotation_angle) * 30, data->player.y + sin(data->player.rotation_angle) * 30, 0xfffff);
     mlx_put_image_to_window(data->mlx, data->mlx_new_window, data->img_ptr, 0, 0);
     return (0);
@@ -137,13 +160,20 @@ int main()
         {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'}
     };
 
-    data.player = (t_player){.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2, .move_step = 0, .speed = 1.5, .turn_direction = 0, .walk_direction = 0, .rotation_angle = PI / 2, .rotation_speed = 5 * (PI / 180)};
+    data.player = (t_player){.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2, .move_step = 0, .speed = 0.5, .turn_direction = 0, .walk_direction = 0, .rotation_angle = PI , .rotation_speed = 3 * (PI / 180)};
     data.mlx = mlx_init();
+    // printf("player x %f\n", data.player.x);
+    // printf("player y %f\n", data.player.y);
     data.mlx_new_window = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "USM4");
     data.img_ptr = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
     data.addr_ptr = mlx_get_data_addr(data.img_ptr, &data.bits_per_pixel, &data.size_line, &data.endian);
     cpy_map(&data, map);
-    if (!mlx_hook(data.mlx_new_window, 2, 0L, handle_keypress, &data))
+    draw_scene(&data);
+    draw_player(&data);
+    // draw_rect(&data, data.player.x , data.player.y ,TILE_SIZE / 3, TILE_SIZE / 3 , 0xffffff);
+    draw_line_dda(&data, data.player.x, data.player.y, data.player.x + cos(data.player.rotation_angle) * 30, data.player.y + sin(data.player.rotation_angle) * 30, 0xfffff);
+    
+    if (!mlx_hook(data.mlx_new_window, 2, 0, handle_keypress, &data))
         return ((perror("mlx hook failure")), 1);
     if (!mlx_hook(data.mlx_new_window, 3, 0, handle_keyrelease, &data))
         return ((perror("mlx hook failure")), 1);
