@@ -33,3 +33,12 @@ Resources:
 8 - and  we do :  Y_increment = diff_y / steps
 9 - so know we have to increment with the locations and round the values of the locations (if (0.5 < the number it takes the greater))
 10 - congrats you have the line 
+
+# raycasting
+
+-> Substract 30 degrees  from the player rotaion angle (Field of view) FOV / 2
+-> Start at column 0
+-> Trace the ray unitil it intersects with a wall (map[i][j]== 1)
+-> Save the intersection(x,y) and the distance (ray lenght)
+-> add the angle incrementation so the ray moves to the right rayAngle += 60 / 32(total_rays)
+-> 

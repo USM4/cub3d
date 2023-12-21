@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/18 22:31:20 by oredoine         ###   ########.fr       */
+/*   Updated: 2023/12/21 02:56:43 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 #define PI 3.14159265359
 #define WINDOW_HEIGHT TILE_SIZE * NUM_ROWS
 #define WINDOW_WIDTH TILE_SIZE * NUM_COLS
+#define FOV 60 * (PI / 180)
+#define RAYWIDTH 4
+#define NUM_RAYS  WINDOW_WIDTH / RAYWIDTH
 
 typedef struct s_player
 {
@@ -44,6 +47,25 @@ typedef struct s_tile
     double tile_y;
     int tile_color;
 } t_tile;
+
+typedef enum ray_facing
+{
+    UP,
+    DOWN,
+    RIGHT,
+    LEFT,
+}   t_ray_facing;
+
+typedef struct s_ray
+{
+    double          ray_angle;
+    double          wallhit_x;
+    double          wallhit_y;
+    int             is_vertical;
+    double          distance;
+    int             wallhit_content;
+    t_ray_facing    facing;
+}   t_ray;
 
 typedef struct s_dda
 {

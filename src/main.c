@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 13:47:40 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/19 01:30:45 by oredoine         ###   ########.fr       */
+/*   Updated: 2023/12/21 03:49:27 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void draw_player(t_data *data)
 {
     int i;
     int j;
-    // t_tile infos;
     i = 0;
     while (i < NUM_ROWS)
     {
@@ -106,13 +105,12 @@ int check_is_wall(double x, double y, t_data *data)
     x /= TILE_SIZE;
     y /= TILE_SIZE;
     i = floor(y);
-    printf("x : %f\n", x);
+    // printf("x : %f\n", x);
     j = floor(x);
-    printf("j : %d\n", j);
-
+    // printf("j : %d\n", j);
+    // printf("i : %d\n", i);
     // printf("map: %c\n", data->map[i][j]);
-
-    if(i >= NUM_ROWS || j >= NUM_COLS || i < 0 || j < 0 ||  data->map[i][j] == '1')
+    if(i < 0 || i >= NUM_ROWS || j < 0 || j >= NUM_COLS ||  data->map[i][j] == '1')
         return(1);
     return(0);
 }
@@ -121,14 +119,33 @@ void update_position(t_data *data)
 {
     printf("move step fdkhla dl update %f = \n" ,data->player.move_step);
     data->player.rotation_angle += data->player.turn_direction * data->player.rotation_speed;
-    if(!check_is_wall(data->player.x , data->player.y, data)
-    && !check_is_wall(data->player.x + (cos(data->player.rotation_angle) * (data->player.move_step)),\
-    data->player.y + ( sin(data->player.rotation_angle) * (data->player.move_step)), data) )
+    if(!check_is_wall((data->player.x + cos(data->player.rotation_angle) * (data->player.move_step)), \
+    data->player.y + (sin(data->player.rotation_angle) * (data->player.move_step)) , data))
     {
         data->player.move_step += data->player.walk_direction * data->player.speed;
-        data->player.x += cos(data->player.rotation_angle) * (data->player.move_step);    
+        data->player.x += cos(data->player.rotation_angle) * (data->player.move_step);
         data->player.y += sin(data->player.rotation_angle) * (data->player.move_step);
     }
+}
+
+void single_ray(double ray_angle, int id)
+{
+    
+}
+
+void raycasting(t_data *data)
+{
+    double ray_angle;
+    int id;
+    ray_angle = data->player.rotation_angle - (FOV / 2);
+    id = 0;
+    while (id  < NUM_RAYS)
+    {
+        single_ray(ray_angle, id);
+        ray_angle += FOV / NUM_RAYS;
+        id++;
+    }
+    
 }
 
 int update_render(t_data *data)
@@ -160,7 +177,7 @@ int main()
         {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'}
     };
 
-    data.player = (t_player){.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2, .move_step = 0, .speed = 0.5, .turn_direction = 0, .walk_direction = 0, .rotation_angle = PI , .rotation_speed = 3 * (PI / 180)};
+    data.player = (t_player){.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2, .move_step = 0, .speed = 0.2, .turn_direction = 0, .walk_direction = 0, .rotation_angle = PI , .rotation_speed = 3 * (PI / 180)};
     data.mlx = mlx_init();
     // printf("player x %f\n", data.player.x);
     // printf("player y %f\n", data.player.y);
