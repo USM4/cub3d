@@ -23,21 +23,30 @@ Resources:
 
 # DDA ALGORITHM
 
-1- you have the current point location (x1, y1)
-2- you take the other point head of the line location (x2, y2)
-3- we applicate on the both points the diff operation x's with the x's and the y's with the other
-4- so we have *diff_x*  = (x2 - x1), and *diff_y* =(y2 - y1) 
-5- to know the *steps* we take the greater from the diffs 
-6 -  the steps we use them in this operation to know how we should be increment with
-7 - so we do :  X_increment = diff_x / steps
-8 - and  we do :  Y_increment = diff_y / steps
-9 - so know we have to increment with the locations and round the values of the locations (if (0.5 < the number it takes the greater))
-10 - congrats you have the line 
+1- you have the current point location (x1, y1).
+2- you take the other point head of the line location (x2, y2).
+3- we applicate on the both points the diff operation x's with the x's and the y's with the other.
+4- so we have *diff_x*  = (x2 - x1), and *diff_y* =(y2 - y1).
+5- to know the *steps* we take the greater from the diffs.
+6 -  the steps we use them in this operation to know how we should be increment with.
+7 - so we do :  X_increment = diff_x / steps.
+8 - and  we do :  Y_increment = diff_y / steps.
+9 - so know we have to increment with the locations and round the values of the locations (if (0.5 < the number it takes the greater)).
+10 - congrats you have the line.
 
 # raycasting
 
--> Substract 30 degrees  from the player rotaion angle (Field of view) FOV / 2
--> Start at column 0
+->check the vertical intersections to find the wall.
+-> when there is a wall on either a vertical or a horizontal intersection , the checking stops.
+
+![Alt text](<Screen Shot 2023-12-23 at 1.20.34 AM.png>)
+
+*********************
+-> Substract 30 degrees  from the player rotaion angle (Field of view)FOV / 2.
+-> Start at column 0.
+# Intersection Steps
+
+![Alt text](<Screen Shot 2023-12-23 at 1.28.45 AM.png>)
 -> Trace the ray unitil it intersects with a wall (map[i][j]== 1)
 -> Save the intersection(x,y) and the distance (ray lenght)
 -> add the angle incrementation so the ray moves to the right rayAngle += 60 / 32(total_rays)

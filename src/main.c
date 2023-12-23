@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 13:47:40 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/21 03:49:27 by oredoine         ###   ########.fr       */
+/*   Updated: 2023/12/23 00:38:55 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,25 +128,24 @@ void update_position(t_data *data)
     }
 }
 
-void single_ray(double ray_angle, int id)
-{
-    
-}
+// void single_ray(double ray_angle, int id)
+// {
+// } 
 
-void raycasting(t_data *data)
-{
-    double ray_angle;
-    int id;
-    ray_angle = data->player.rotation_angle - (FOV / 2);
-    id = 0;
-    while (id  < NUM_RAYS)
-    {
-        single_ray(ray_angle, id);
-        ray_angle += FOV / NUM_RAYS;
-        id++;
-    }
+// void raycasting(t_data *data)
+// {
+//     double ray_angle;
+//     int id;
+//     ray_angle = data->player.rotation_angle - (FOV / 2);
+//     id = 0;
+//     while (id  < NUM_RAYS)
+//     {
+//         single_ray(ray_angle, id);
+//         ray_angle += FOV / NUM_RAYS;
+//         id++;
+//     }
     
-}
+// }
 
 int update_render(t_data *data)
 {
