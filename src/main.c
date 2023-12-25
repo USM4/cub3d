@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 13:47:40 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/23 00:38:55 by oredoine         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/12/25 22:36:59 by  oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,24 +128,6 @@ void update_position(t_data *data)
     }
 }
 
-// void single_ray(double ray_angle, int id)
-// {
-// } 
-
-// void raycasting(t_data *data)
-// {
-//     double ray_angle;
-//     int id;
-//     ray_angle = data->player.rotation_angle - (FOV / 2);
-//     id = 0;
-//     while (id  < NUM_RAYS)
-//     {
-//         single_ray(ray_angle, id);
-//         ray_angle += FOV / NUM_RAYS;
-//         id++;
-//     }
-    
-// }
 
 int update_render(t_data *data)
 {
@@ -158,6 +140,14 @@ int update_render(t_data *data)
     mlx_put_image_to_window(data->mlx, data->mlx_new_window, data->img_ptr, 0, 0);
     return (0);
 }
+
+// void    clear_angle(t_data *data)
+// {
+//     if (data->ray.ray_angle < 0)
+//         data->ray.ray_angle +=  (2 * PI);
+//     data->ray.ray_angle =  data->ray.ray_angle % ((double)2 * PI);
+// }
+
 
 int main()
 {
@@ -175,8 +165,9 @@ int main()
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'}
     };
-
     data.player = (t_player){.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2, .move_step = 0, .speed = 0.2, .turn_direction = 0, .walk_direction = 0, .rotation_angle = PI , .rotation_speed = 3 * (PI / 180)};
+    data.ray = (t_ray) {.wallhit_x = 0, .wallhit_y = 0, .distance = 0, .ray_angle = PI};
+    // clear_angle(&data);
     data.mlx = mlx_init();
     // printf("player x %f\n", data.player.x);
     // printf("player y %f\n", data.player.y);

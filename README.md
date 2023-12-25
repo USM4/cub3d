@@ -1,22 +1,22 @@
 # Cub3d
 Resources:
- -> https://www.desmos.com/calculator
- -> https://permadi.com/1996/05/ray-casting-tutorial-table-of-contents/
- -> pikuma drive
-*m    **************
+ -> https://www.desmos.com/calculator  
+ -> https://permadi.com/1996/05/ray-casting-tutorial-table-of-contents/  
+ -> pikuma drive  
+ **************
 
--> make a good modular makefile + add the gnl libft and mlx42 librarie 
--> read documentation of mlx42 and make prototypes to see how things work
--> ask about the difference between mlx42 and mlx
+-> make a good modular makefile + add the gnl libft and mlx42 librarie  
+-> read documentation of mlx42 and make prototypes to see how things work  
+-> ask about the difference between mlx42 and mlx  
 
-> it's really important to have good "reperage" meaning know what left right top and down means in the context of your program's map  
+> it's really important to have good "reperage" meaning know what left right top and down means in the context of your program's map   
 
 -> start by making a 2d map and try to fix collisions and ray casting  
--> raise walls with distinct color   s for each side to make things easy at the start
--> let textures be the very last thing you add
+-> raise walls with distinct color   s for each side to make things easy at the start  
+-> let textures be the very last thing you add  
 
 # things to note
-
+ 
 -> watch pikuma videos
 -> reviser les relations de : tan / cos / sin
 -> les limites de tan a gauche et a droite de pi/2(use desmos.com)
@@ -44,10 +44,25 @@ Resources:
 *********************
 -> Substract 30 degrees  from the player rotaion angle (Field of view)FOV / 2.  
 -> Start at column 0.  
-# Intersection Steps
+ # Horizontal Intersections  
+  
+-> Find coordinate of the first horizontal intersection (Point A)  
+-> Find yStep (Tile size)  
+-> Find xStep  
+-> Convert intersection point (x,y) into map index [i,j]
+-> If (intersection hits a wall): store horizontal hit distance ? find the next horizontal intersection  
 
-![Alt text](<Screen Shot 2023-12-23 at 1.28.45 AM.png>)
--> Trace the ray unitil it intersects with a wall (map[i][j]== 1)
--> Save the intersection(x,y) and the distance (ray lenght)
--> add the angle incrementation so the ray moves to the right rayAngle += 60 / 32(total_rays)
--> 
+![Alt text](Horzontal-inter.png)  
+
+# Vertical intersections
+
+-> Same way to find steps as Horizontal ones 
+-> just instead of dividing we multiplying by xStep  
+
+# Distance from ray to wall hit  
+
+-> Find the intersection point (point A)  
+-> calculate diff_x and diff_y (xStep and yStep)
+-> loop incrementing xstep horizontally and ystep vertically until we hit a wall  
+-> get the both horizontal and the vertical distances and the closest one in our final distance from the ray to the wall  
+->  
