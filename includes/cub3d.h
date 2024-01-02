@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/25 22:03:46 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/02 06:03:28 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,19 @@
 #define RAYWIDTH 4
 #define NUM_RAYS WINDOW_WIDTH / RAYWIDTH
 
+typedef struct s_intersections
+{
+    int x_point;
+    int y_point;
+    int x_step;
+    int y_step;
+    int next_hx;
+    int next_hy;
+    int next_vx;
+    int next_vy;
+
+} t_intersections;
+
 typedef struct s_player
 {
     double x;
@@ -48,23 +61,19 @@ typedef struct s_tile
     int tile_color;
 } t_tile;
 
-typedef enum ray_facing
-{
-    UP,
-    DOWN,
-    RIGHT,
-    LEFT,
-} t_ray_facing;
-
 typedef struct s_ray
 {
     double ray_angle;
-    double wallhit_x; 
-    double wallhit_y;
-    int is_vertical;
+    double horz_wallhit_x;
+    double horz_wallhit_y;
+    double vert_wallhit_x;
+    double vert_wallhit_y;
     double distance;
-    int wallhit_content;
-    t_ray_facing facing;
+    int facing_down;
+    int facing_up;
+    int facing_right;
+    int facing_left;
+    t_intersections hit;
 } t_ray;
 
 typedef struct s_dda
@@ -80,18 +89,18 @@ typedef struct s_dda
 
 typedef struct s_data
 {
-    char        **map;
-    void        *mlx_new_window;
-    void        *img_ptr;
-    char        *addr_ptr;
-    int         bits_per_pixel;
-    int         size_line;
-    int         endian;
-    void        *mlx;
-    t_player    player;
-    t_tile      tile;
-    t_dda       line;
-    t_ray       ray;
+    char **map;
+    void *mlx_new_window;
+    void *img_ptr;
+    char *addr_ptr;
+    int bits_per_pixel;
+    int size_line;
+    int endian;
+    void *mlx;
+    t_player player;
+    t_tile tile;
+    t_dda line;
+    t_ray ray;
 } t_data;
 
 extern void my_mlx_pixel_put(t_data *data, int x, int y, int color);
