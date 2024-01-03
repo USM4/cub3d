@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/02 06:03:28 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/03 03:37:23 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,20 @@
 #define WINDOW_HEIGHT TILE_SIZE *NUM_ROWS
 #define WINDOW_WIDTH TILE_SIZE *NUM_COLS
 #define FOV 60 * (PI / 180)
+#define STR 1 * (PI / 180)//
 #define RAYWIDTH 4
 #define NUM_RAYS WINDOW_WIDTH / RAYWIDTH
 
 typedef struct s_intersections
 {
-    int x_point;
-    int y_point;
-    int x_step;
-    int y_step;
-    int next_hx;
-    int next_hy;
-    int next_vx;
-    int next_vy;
+    double x_point;
+    double y_point;
+    double x_step;
+    double y_step;
+    double next_hx;
+    double next_hy;
+    double next_vx;
+    double next_vy;
 
 } t_intersections;
 
@@ -69,6 +70,8 @@ typedef struct s_ray
     double vert_wallhit_x;
     double vert_wallhit_y;
     double distance;
+    double the_x_wallhit;
+    double the_y_wallhit;
     int facing_down;
     int facing_up;
     int facing_right;

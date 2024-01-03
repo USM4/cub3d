@@ -65,4 +65,6 @@ Resources:
 -> calculate diff_x and diff_y (xStep and yStep)
 -> loop incrementing xstep horizontally and ystep vertically until we hit a wall  
 -> get the both horizontal and the vertical distances and the closest one in our final distance from the ray to the wall  
-->  
+-> and compare between them then choose the smallest distance
+-> here is a math relation of calculating the distance between two points
+![Alt text](<Screen Shot 2024-01-03 at 3.12.05 AM.png>)
