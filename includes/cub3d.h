@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/03 03:37:23 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/04 03:09:03 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,14 @@
 #include <math.h>
 #include <unistd.h>
 
-#define TILE_SIZE 32
+#define TILE_SIZE 64
 #define NUM_ROWS 11
 #define NUM_COLS 15
 #define PI 3.14159265359
 #define WINDOW_HEIGHT TILE_SIZE *NUM_ROWS
 #define WINDOW_WIDTH TILE_SIZE *NUM_COLS
 #define FOV 60 * (PI / 180)
-#define STR 1 * (PI / 180)//
-#define RAYWIDTH 4
-#define NUM_RAYS WINDOW_WIDTH / RAYWIDTH
+#define NUM_RAYS WINDOW_WIDTH / 15
 
 typedef struct s_intersections
 {
@@ -49,8 +47,8 @@ typedef struct s_player
     double y;
     double speed;
     double move_step;
-    int turn_direction;
-    int walk_direction;
+    double turn_direction;
+    double walk_direction;
     double rotation_angle;
     double rotation_speed;
 } t_player;
