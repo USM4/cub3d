@@ -68,3 +68,4 @@ Resources:
 -> and compare between them then choose the smallest distance
 -> here is a math relation of calculating the distance between two points
 ![Alt text](<Screen Shot 2024-01-03 at 3.12.05 AM.png>)
+

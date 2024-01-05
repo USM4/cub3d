@@ -6,61 +6,64 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 00:19:17 by oredoine          #+#    #+#             */
-/*   Updated: 2023/12/18 22:26:37 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/05 01:07:19 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"cub3d.h"
+#include "cub3d.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
-	char	*dst;
+	if (x < 0 || y < 0 || x >= WINDOW_WIDTH || y >= WINDOW_HEIGHT)
+		return;
+
+	char *dst;
 
 	dst = data->addr_ptr + (y * data->size_line + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+	*(unsigned int *)dst = color;
 }
 
-void draw_rect(t_data *data, int x, int y, int width, int height, int color)
+void draw_rect(t_data *data, double x, double y, double width, double height, int color)
 {
-    int i;
-    int j;
+	int i;
+	int j;
 
-    i = y;
-    while (i < y + height)
-    {
-        j = x;
-        while (j < x + width)
-        {
-            // printf("gere x : %d - y : %d \n", j, i);
-            my_mlx_pixel_put(data, j, i, color);
-            j++;
-        }
-        i++;
-    }
+	i = y;
+	while (i < y + height)
+	{
+		j = x;
+		while (j < x + width)
+		{
+			// printf("gere x : %d - y : %d \n", j, i);
+			my_mlx_pixel_put(data, j, i, color);
+			j++;
+		}
+		i++;
+	}
 }
 
 int my_own_round(double num)
 {
-    double fractional_part;
+	double fractional_part;
 
-    fractional_part = num - (int) num;
-    if(fractional_part >= 0.5)
-        return((int)(num + 1.0));
-    else
-        return((int)num);
+	fractional_part = num - (int)num;
+	if (fractional_part >= 0.5)
+		return ((int)(num + 1.0));
+	else
+		return ((int)num);
 }
 
 int my_own_abs(int num)
 {
-    if (num < 0)
-        num *= -1;
-    return(num);
+	if (num < 0)
+		num *= -1;
+	return (num);
 }
 
 char **allocate_the_map()
 {
-	char	**cpy;
-	int		i;
+	char **cpy;
+	int i;
 
 	i = 0;
 	cpy = malloc(sizeof(char *) * (NUM_ROWS + 1));
@@ -71,7 +74,7 @@ char **allocate_the_map()
 	}
 	while (i < NUM_ROWS)
 	{
-		cpy[i] = malloc(sizeof(char ) * (NUM_COLS + 1));
+		cpy[i] = malloc(sizeof(char) * (NUM_COLS + 1));
 		if (!cpy[i])
 		{
 			perror("MALLOC FAILURE");
@@ -82,10 +85,10 @@ char **allocate_the_map()
 	return (cpy);
 }
 
-void    cpy_map(t_data *data, char map[NUM_ROWS][NUM_COLS])
+void cpy_map(t_data *data, char map[NUM_ROWS][NUM_COLS])
 {
-	int		i;
-	int		j;
+	int i;
+	int j;
 
 	i = 0;
 	data->map = allocate_the_map();
@@ -94,7 +97,7 @@ void    cpy_map(t_data *data, char map[NUM_ROWS][NUM_COLS])
 		j = 0;
 		while (j < NUM_COLS)
 		{
-            
+
 			data->map[i][j] = map[i][j];
 			j++;
 		}

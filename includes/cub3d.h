@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/04 03:09:03 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/05 00:06:34 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@
 #define NUM_ROWS 11
 #define NUM_COLS 15
 #define PI 3.14159265359
-#define WINDOW_HEIGHT TILE_SIZE *NUM_ROWS
-#define WINDOW_WIDTH TILE_SIZE *NUM_COLS
+#define WINDOW_HEIGHT TILE_SIZE * NUM_ROWS
+#define WINDOW_WIDTH TILE_SIZE * NUM_COLS
 #define FOV 60 * (PI / 180)
-#define NUM_RAYS WINDOW_WIDTH / 15
+#define NUM_RAYS WINDOW_WIDTH
+#define FACTOR 0.2
 
 typedef struct s_intersections
 {
@@ -101,11 +102,12 @@ typedef struct s_data
     t_player player;
     t_tile tile;
     t_dda line;
-    t_ray ray;
+    t_ray ray[NUM_RAYS];
+
 } t_data;
 
 extern void my_mlx_pixel_put(t_data *data, int x, int y, int color);
-extern void draw_rect(t_data *data, int x, int y, int width, int height, int color);
+extern void draw_rect(t_data *data, double x, double y, double width, double height, int color);
 extern int my_own_round(double num);
 extern int my_own_abs(int num);
 extern void cpy_map(t_data *data, char map[NUM_ROWS][NUM_COLS]);
