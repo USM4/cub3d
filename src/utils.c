@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 00:19:17 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/05 01:07:19 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/06 01:23:45 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 
 void my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
+	char *dst;
 	if (x < 0 || y < 0 || x >= WINDOW_WIDTH || y >= WINDOW_HEIGHT)
 		return;
-
-	char *dst;
-
 	dst = data->addr_ptr + (y * data->size_line + x * (data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }
@@ -34,7 +32,6 @@ void draw_rect(t_data *data, double x, double y, double width, double height, in
 		j = x;
 		while (j < x + width)
 		{
-			// printf("gere x : %d - y : %d \n", j, i);
 			my_mlx_pixel_put(data, j, i, color);
 			j++;
 		}

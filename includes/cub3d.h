@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/05 00:06:34 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/06 01:57:35 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 #define WINDOW_WIDTH TILE_SIZE * NUM_COLS
 #define FOV 60 * (PI / 180)
 #define NUM_RAYS WINDOW_WIDTH
-#define FACTOR 0.2
+#define FACTOR 1
 
 typedef struct s_intersections
 {
