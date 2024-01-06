@@ -12,6 +12,8 @@
 
 #include "cub3d.h"
 
+#include <string.h>
+
 void draw_line_dda(t_data *data, double x1, double y1, double x2, double y2, int color)
 {
     data->line.diff_x = x2 - x1;
@@ -93,9 +95,9 @@ void draw_scene(t_data *data)
             data->tile.tile_x = j * TILE_SIZE;
             data->tile.tile_y = i * TILE_SIZE;
             if (data->map[i][j] == '1')
-                data->tile.tile_color =  0x000066;
+                data->tile.tile_color = 0x000066;
             else
-                data->tile.tile_color =  0x0;
+                data->tile.tile_color = 0x0;
             draw_rect(data, FACTOR * data->tile.tile_x, FACTOR * data->tile.tile_y, FACTOR * TILE_SIZE, FACTOR * TILE_SIZE, data->tile.tile_color);
             j++;
         }
@@ -113,6 +115,16 @@ int check_is_wall(double x, double y, t_data *data)
     j = floor(x);
     if (i <= 0 || i >= NUM_ROWS || j <= 0 || j >= NUM_COLS || data->map[i][j] == '1')
         return (1);
+    // return (0);
+    // int    a;
+    // int    b;
+
+    // a = (int)floor((x) / TILE_SIZE);
+    // b = (int)floor((y) / TILE_SIZE);
+    // if (a < 0 || a >= NUM_COLS || b < 0 || b >= NUM_ROWS)
+    //     return (1);
+    // if ((data->map[b][a] && (data->map[b][a] == '1')))
+    //     return (1);
     return (0);
 }
 
@@ -126,25 +138,19 @@ void horizontal(t_data *data, int i)
     data->ray[i].hit.next_hy = 0;
 
     data->ray[i].hit.y_point = floor(data->player.y / TILE_SIZE) * TILE_SIZE;
-    if (data->ray[i].facing_down)
+    if (data->ray[i].facing_down == 1)
         data->ray[i].hit.y_point += TILE_SIZE;
     // find the x coordinate
-    data->ray[i].hit.x_point = data->player.x + ((data->ray[i].hit.y_point - data->player.y) / tan(data->ray[i].ray_angle));
+    data->ray[i].hit.x_point = data->player.x + (data->ray[i].hit.y_point - data->player.y) / tan(data->ray[i].ray_angle);
     // calculate the increment steps
     data->ray[i].hit.y_step = TILE_SIZE;
-    if (data->ray[i].facing_up)
+    if (data->ray[i].facing_up == 1)
         data->ray[i].hit.y_step *= -1;
-    else    
-        data->ray[i].hit.y_step *= 1;
     data->ray[i].hit.x_step = TILE_SIZE / tan(data->ray[i].ray_angle);
     if ((data->ray[i].facing_left && data->ray[i].hit.x_step > 0))
-        data->ray[i].hit.x_step *= -1 ;
-    else
-        data->ray[i].hit.x_step *= 1 ;
-    if(data->ray[i].facing_right && data->ray[i].hit.x_step < 0)
         data->ray[i].hit.x_step *= -1;
-    else
-        data->ray[i].hit.x_step *= 1;
+    if (data->ray[i].facing_right && data->ray[i].hit.x_step < 0)
+        data->ray[i].hit.x_step *= -1;
     data->ray[i].hit.next_hx = data->ray[i].hit.x_point;
     data->ray[i].hit.next_hy = data->ray[i].hit.y_point;
     // increment xStep and yStep unitil find the wall
@@ -155,18 +161,20 @@ void horizontal(t_data *data, int i)
             decrement = 1;
         else
             decrement = 0;
-        if (!check_is_wall(data->ray[i].hit.next_hx, data->ray[i].hit.next_hy - decrement, data))
-        {
-            data->ray[i].hit.next_hx += data->ray[i].hit.x_step;
-            data->ray[i].hit.next_hy += data->ray[i].hit.y_step;
-        }
-        else
+        if (check_is_wall(data->ray[i].hit.next_hx, data->ray[i].hit.next_hy - decrement, data))
         {
             data->ray[i].horz_wallhit_x = data->ray[i].hit.next_hx;
             data->ray[i].horz_wallhit_y = data->ray[i].hit.next_hy;
             break;
         }
+        else
+        {
+            data->ray[i].hit.next_hx += data->ray[i].hit.x_step;
+            data->ray[i].hit.next_hy += data->ray[i].hit.y_step;
+        }
     }
+    data->ray[i].horz_wallhit_x = data->ray[i].hit.next_hx;
+    data->ray[i].horz_wallhit_y = data->ray[i].hit.next_hy;
 }
 
 void vertical(t_data *data, int i)
@@ -179,7 +187,7 @@ void vertical(t_data *data, int i)
     data->ray[i].hit.next_vy = 0;
 
     data->ray[i].hit.x_point = floor(data->player.x / TILE_SIZE) * TILE_SIZE;
-    if(data->ray[i].facing_right)
+    if (data->ray[i].facing_right == 1)
         data->ray[i].hit.x_point += TILE_SIZE;
     // find the y coordinate
     data->ray[i].hit.y_point = data->player.y + (data->ray[i].hit.x_point - data->player.x) * tan(data->ray[i].ray_angle);
@@ -191,10 +199,10 @@ void vertical(t_data *data, int i)
 
     if ((data->ray[i].facing_up && data->ray[i].hit.y_step > 0))
         data->ray[i].hit.y_step *= -1;
-    else 
+    else
         data->ray[i].hit.y_step *= 1;
-    
-    if((data->ray[i].facing_down && data->ray[i].hit.y_step < 0))
+
+    if ((data->ray[i].facing_down && data->ray[i].hit.y_step < 0))
         data->ray[i].hit.y_step *= -1;
     else
         data->ray[i].hit.y_step *= 1;
@@ -208,18 +216,20 @@ void vertical(t_data *data, int i)
             var = 1;
         else
             var = 0;
-        if (!check_is_wall(data->ray[i].hit.next_vx - var, data->ray[i].hit.next_vy, data))
-        {
-            data->ray[i].hit.next_vx += data->ray[i].hit.x_step;
-            data->ray[i].hit.next_vy += data->ray[i].hit.y_step;
-        }
-        else
+        if (check_is_wall(data->ray[i].hit.next_vx - var, data->ray[i].hit.next_vy, data))
         {
             data->ray[i].vert_wallhit_x = data->ray[i].hit.next_vx;
             data->ray[i].vert_wallhit_y = data->ray[i].hit.next_vy;
             break;
         }
+        else
+        {
+            data->ray[i].hit.next_vx += data->ray[i].hit.x_step;
+            data->ray[i].hit.next_vy += data->ray[i].hit.y_step;
+        }
     }
+    data->ray[i].vert_wallhit_x = data->ray[i].hit.next_vx;
+    data->ray[i].vert_wallhit_y = data->ray[i].hit.next_vy;
 }
 
 void update_position(t_data *data)
@@ -257,14 +267,16 @@ void facing_normalization(t_ray *ray)
 double nornmalize_any_angle(double angle)
 {
     angle = fmod(angle, 2 * PI);
-    if (angle < 0)
-        angle += (2 * PI);
-    return (angle);
+    while (angle < 0)
+        angle += 2 * PI;
+    while (angle >= 2 * PI)
+        angle -= 2 * PI;
+    return angle;
 }
 
 double caculate_distance_of_two_point(double x2, double y2, double x1, double y1)
 {
-    return (sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2)));
+    return sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2));
 }
 
 void distance_normalizing(t_data *data, int i)
@@ -276,6 +288,11 @@ void distance_normalizing(t_data *data, int i)
                                                    data->player.x, data->player.y);
     ver_distance = caculate_distance_of_two_point(data->ray[i].vert_wallhit_x, data->ray[i].vert_wallhit_y,
                                                   data->player.x, data->player.y);
+    // if (horz_distance == 0)
+    //     printf("%f\n", horz_distance);
+    // if (ver_distance == 0)
+    //     printf("%f\n", horz_distance);
+
     if (horz_distance > ver_distance)
     {
         data->ray[i].the_x_wallhit = data->ray[i].vert_wallhit_x;
@@ -296,6 +313,7 @@ void draw_all_lines(t_data *data, int i, double angle)
     // data->ray[i].ray_angle = nornmalize_any_angle(data->ray[i].ray_angle);
     data->ray[i].ray_angle = angle;
     facing_normalization(&data->ray[i]);
+
     horizontal(data, i);
     vertical(data, i);
     distance_normalizing(data, i);
@@ -315,7 +333,7 @@ void render_3d(t_data *data)
         fish_bowl = data->ray[i].distance * cos(data->ray[i].ray_angle - data->player.rotation_angle);
         distance_prj_plane = (WINDOW_WIDTH / 2) / tan(FOV / 2);
         wall_stripe_height = (TILE_SIZE / fish_bowl) * distance_prj_plane;
-        draw_rect(data, i, ((WINDOW_HEIGHT) / 2) - (wall_stripe_height / 2), 1, wall_stripe_height, 0x000066);
+        draw_rect(data, i, ((WINDOW_HEIGHT) / 2) - (wall_stripe_height / 2), 1, wall_stripe_height, 0x0);
         i++;
     }
 }
@@ -324,25 +342,34 @@ int update_render(t_data *data)
 {
     int i;
     double angle;
-    // mlx_clear_window(data->mlx, data->mlx_new_window);
-    update_position(data);
-    angle = data->player.rotation_angle - ((FOV) / 2);
+    double angle_increment;
+
     i = 0;
-    draw_rect(data, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xffffff);
+    update_position(data);
+    data->player.rotation_angle = nornmalize_any_angle(data->player.rotation_angle);
+    angle_increment = (FOV) / (NUM_RAYS);
+    angle = data->player.rotation_angle - ((FOV) / 2);
+    draw_rect(data, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xfc6500);
+    render_3d(data);
+    // bzero(&data->ray, sizeof(t_ray) * NUM_RAYS);
     while (i < (NUM_RAYS))
     {
+        bzero(&data->ray[i], sizeof(t_ray));
+
+        // data[i].ray = {  };
         draw_all_lines(data, i, nornmalize_any_angle(angle));
-        angle += ((FOV) / (NUM_RAYS));
+        angle += angle_increment;
         i++;
     }
-    i = 0;
-    // render_3d(data);
+    printf("%d\n", i);
+    // exit(1);
     draw_scene(data);
     draw_player(data);
-    draw_line_dda(data, FACTOR * (data->player.x), FACTOR * (data->player.y), FACTOR * (data->player.x + cos(data->player.rotation_angle) * 30), FACTOR * (data->player.y + sin(data->player.rotation_angle) * 30), 0xFF0000);
+    // draw_line_dda(data, FACTOR * (data->player.x), FACTOR * (data->player.y), FACTOR * (data->player.x + cos(data->player.rotation_angle) * 30), FACTOR * (data->player.y + sin(data->player.rotation_angle) * 30), 0xFF0000);
+    i = 0;
     while (i < NUM_RAYS)
     {
-        draw_line_dda(data, FACTOR * data->player.x, FACTOR * data->player.y, FACTOR * data->ray[i].the_x_wallhit, FACTOR * data->ray[i].the_y_wallhit, 0xfffff);
+        draw_line_dda(data, FACTOR * data->player.x, FACTOR * data->player.y, FACTOR * data->ray[i].the_x_wallhit, FACTOR * data->ray[i].the_y_wallhit, 0xfc6500);
         i++;
     }
     mlx_put_image_to_window(data->mlx, data->mlx_new_window, data->img_ptr, 0, 0);
@@ -355,13 +382,13 @@ int main()
     char map[11][15] = {
         {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '1'},
-        {'1', '0', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1', '0', '1'},
-        {'1', '0', '1', '1', '1', '0', '0', '0', '0', '0', '1', '0', '1', '0', '1'},
-        {'1', '0', '0', '0', '0', '0', 'S', '0', '0', '0', '1', '0', '1', '0', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '1', '1', '1', '1', '1', '0', '1'},
+        {'1', '0', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+        {'1', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+        {'1', '0', '0', '0', '0', '0', 'S', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '1', '1', '1', '1', '1', '0', '0', '0', '1', '1', '1', '1', '0', '1'},
+        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'}};
     data.player = (t_player){.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2, .move_step = 0, .speed = 0.2, .turn_direction = 0, .walk_direction = 0, .rotation_angle = PI, .rotation_speed = 2 * (PI / 180)};
@@ -376,6 +403,8 @@ int main()
     if (!mlx_hook(data.mlx_new_window, 2, 0, handle_keypress, &data))
         return ((perror("mlx hook failure")), 1);
     if (!mlx_hook(data.mlx_new_window, 3, 0, handle_keyrelease, &data))
+        return ((perror("mlx hook failure")), 1);
+    if (!mlx_hook(data.mlx_new_window, 17, 0, quit_window, &data))
         return ((perror("mlx hook failure")), 1);
     mlx_loop_hook(data.mlx, update_render, &data);
     mlx_loop(data.mlx);

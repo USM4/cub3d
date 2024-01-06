@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 00:19:17 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/06 01:23:45 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/07 00:24:44 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,8 @@ void cpy_map(t_data *data, char map[NUM_ROWS][NUM_COLS])
 		i++;
 	}
 	data->map[i] = NULL;
+}
+int quit_window()
+{
+	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/06 01:57:35 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/07 00:25:08 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 #define WINDOW_WIDTH TILE_SIZE * NUM_COLS
 #define FOV 60 * (PI / 180)
 #define NUM_RAYS WINDOW_WIDTH
-#define FACTOR 1
+#define FACTOR 0.2
 
 typedef struct s_intersections
 {
@@ -111,5 +111,5 @@ extern void draw_rect(t_data *data, double x, double y, double width, double hei
 extern int my_own_round(double num);
 extern int my_own_abs(int num);
 extern void cpy_map(t_data *data, char map[NUM_ROWS][NUM_COLS]);
-
+extern int quit_window(void);
 #endif
