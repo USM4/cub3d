@@ -69,3 +69,14 @@ Resources:
 -> here is a math relation of calculating the distance between two points
 ![Alt text](<Screen Shot 2024-01-03 at 3.12.05 AM.png>)
 
+
+
+S : 1
+W : 13
+A : 0
+D : 2
+
+up : 126
+down : 125
+right : 124
+left : 123

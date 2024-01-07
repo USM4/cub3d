@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/07 00:25:08 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/07 05:41:12 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,15 @@ typedef struct s_intersections
 
 typedef struct s_player
 {
-    double x;
-    double y;
-    double speed;
-    double move_step;
-    double turn_direction;
-    double walk_direction;
-    double rotation_angle;
-    double rotation_speed;
+    double  x;
+    double  y;
+    double  speed;
+    double  move_step;
+    double  turn_direction;
+    double  walk_direction;
+    double  rotation_angle;
+    double  rotation_speed;
+    double  flag;
 } t_player;
 
 typedef struct s_tile
@@ -103,7 +104,6 @@ typedef struct s_data
     t_tile tile;
     t_dda line;
     t_ray ray[NUM_RAYS];
-
 } t_data;
 
 extern void my_mlx_pixel_put(t_data *data, int x, int y, int color);

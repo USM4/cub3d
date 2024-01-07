@@ -39,15 +39,32 @@ void draw_line_dda(t_data *data, double x1, double y1, double x2, double y2, int
 
 int handle_keypress(int keycode, t_data *data)
 {
+    //arrows
     if (keycode == 123)
         data->player.turn_direction = -1;
-    if (keycode == 124)
+    else if (keycode == 124)
         data->player.turn_direction = 1;
-    if (keycode == 125)
-        data->player.walk_direction = -1;
-    if (keycode == 126)
+
+    // alphabets
+    else if (keycode == 0)
+    {
+        // printf("A\n");
+        data->player.flag = -1;
+        // printf("flag A %f\n", data->player.flag);
         data->player.walk_direction = 1;
-    if (keycode == 53)
+    }
+    else if (keycode == 2)
+    {
+        // printf("D\n");
+        data->player.flag = 1;
+        data->player.walk_direction = 1;
+        // printf("flag D %f\n", data->player.flag);
+    }
+    else if (keycode == 13)
+        data->player.walk_direction = 1;
+    else if (keycode == 1)
+        data->player.walk_direction = -1;
+    else if (keycode == 53)
         exit(0);
     return (0);
 }
@@ -56,11 +73,18 @@ int handle_keyrelease(int keycode, t_data *data)
 {
     if (keycode == 123 || keycode == 124)
         data->player.turn_direction = 0;
-    if (keycode == 125 || keycode == 126)
+    if (keycode == 13 ||  keycode == 1 )
     {
         data->player.walk_direction = 0;
         data->player.move_step = 0;
     }
+    if ( keycode == 2 || keycode == 0)
+    {
+        data->player.flag = 0;
+        data->player.walk_direction = 0;
+        data->player.move_step = 0;
+    }
+
     return (0);
 }
 
@@ -115,22 +139,12 @@ int check_is_wall(double x, double y, t_data *data)
     j = floor(x);
     if (i <= 0 || i >= NUM_ROWS || j <= 0 || j >= NUM_COLS || data->map[i][j] == '1')
         return (1);
-    // return (0);
-    // int    a;
-    // int    b;
-
-    // a = (int)floor((x) / TILE_SIZE);
-    // b = (int)floor((y) / TILE_SIZE);
-    // if (a < 0 || a >= NUM_COLS || b < 0 || b >= NUM_ROWS)
-    //     return (1);
-    // if ((data->map[b][a] && (data->map[b][a] == '1')))
-    //     return (1);
     return (0);
 }
 
 void horizontal(t_data *data, int i)
 {
-    int decrement;
+        int decrement;
 
     // find the y coordinate of the closest horizontal tile
     decrement = 0;
@@ -208,7 +222,6 @@ void vertical(t_data *data, int i)
         data->ray[i].hit.y_step *= 1;
     data->ray[i].hit.next_vx = data->ray[i].hit.x_point;
     data->ray[i].hit.next_vy = data->ray[i].hit.y_point;
-
     // increment xStep and yStep unitil find the wall
     while ((data->ray[i].hit.next_vx >= 0 && data->ray[i].hit.next_vx <= WINDOW_WIDTH) && (data->ray[i].hit.next_vy >= 0 && data->ray[i].hit.next_vy <= WINDOW_HEIGHT))
     {
@@ -234,20 +247,24 @@ void vertical(t_data *data, int i)
 
 void update_position(t_data *data)
 {
-    // printf("move step fdkhla dl update %f = \n" ,data->player.move_step);
+    double new_x;
+    double new_y;
+    double angle;
+
     data->player.rotation_angle += data->player.turn_direction * data->player.rotation_speed;
-    if (!check_is_wall((data->player.x + cos(data->player.rotation_angle) * (data->player.move_step)),
-                       data->player.y + (sin(data->player.rotation_angle) * (data->player.move_step)), data))
+    angle = data->player.rotation_angle + (data->player.flag * (PI / 2));
+    new_x =data->player.x + cos(angle) * (data->player.move_step);
+    new_y =data->player.y + sin(angle) * (data->player.move_step);
+    if (!check_is_wall(new_x, new_y, data))
     {
         data->player.move_step += data->player.walk_direction * data->player.speed;
-        data->player.x += cos(data->player.rotation_angle) * (data->player.move_step);
-        data->player.y += sin(data->player.rotation_angle) * (data->player.move_step);
+        data->player.x = new_x;
+        data->player.y = new_y;
     }
 }
 
 void facing_normalization(t_ray *ray)
 {
-
     ray->facing_right = 0;
     ray->facing_left = 0;
     ray->facing_up = 0;
@@ -333,6 +350,12 @@ void render_3d(t_data *data)
         fish_bowl = data->ray[i].distance * cos(data->ray[i].ray_angle - data->player.rotation_angle);
         distance_prj_plane = (WINDOW_WIDTH / 2) / tan(FOV / 2);
         wall_stripe_height = (TILE_SIZE / fish_bowl) * distance_prj_plane;
+        // int y = 0;
+        // while (y < ((WINDOW_HEIGHT) / 2) - (wall_stripe_height / 2))
+        // {
+        //     my_mlx_pixel_put(data, i, y, 0xFFFFFF);
+        //     y++;
+        // }
         draw_rect(data, i, ((WINDOW_HEIGHT) / 2) - (wall_stripe_height / 2), 1, wall_stripe_height, 0x0);
         i++;
     }
@@ -354,15 +377,12 @@ int update_render(t_data *data)
     // bzero(&data->ray, sizeof(t_ray) * NUM_RAYS);
     while (i < (NUM_RAYS))
     {
-        bzero(&data->ray[i], sizeof(t_ray));
-
-        // data[i].ray = {  };
+        // bzero(&data->ray[i], sizeof(t_ray));
+        data->ray[i] = (t_ray) {.the_x_wallhit = 0, .the_y_wallhit = 0, .horz_wallhit_x = 0, .horz_wallhit_y = 0, .vert_wallhit_x = 0, .vert_wallhit_y = 0, .distance = 0, .ray_angle = PI / 2, .facing_down = 0, .facing_up = 0, .facing_left = 0, .facing_right = 0};
         draw_all_lines(data, i, nornmalize_any_angle(angle));
         angle += angle_increment;
         i++;
     }
-    printf("%d\n", i);
-    // exit(1);
     draw_scene(data);
     draw_player(data);
     // draw_line_dda(data, FACTOR * (data->player.x), FACTOR * (data->player.y), FACTOR * (data->player.x + cos(data->player.rotation_angle) * 30), FACTOR * (data->player.y + sin(data->player.rotation_angle) * 30), 0xFF0000);
@@ -382,17 +402,17 @@ int main()
     char map[11][15] = {
         {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '1'},
-        {'1', '0', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+        {'1', '0', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '0', '0', '0', 'S', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+        {'1', '0', '0', '0', '1', '1', '0', '0', '1', '1', '1', '1', '1', '0', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'}};
-    data.player = (t_player){.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2, .move_step = 0, .speed = 0.2, .turn_direction = 0, .walk_direction = 0, .rotation_angle = PI, .rotation_speed = 2 * (PI / 180)};
-    // data.ray = (t_ray){.the_x_wallhit = 0, .the_y_wallhit = 0, .horz_wallhit_x = 0, .horz_wallhit_y = 0, .vert_wallhit_x = 0, .vert_wallhit_y = 0, .distance = 0, .ray_angle = PI / 2, .facing_down = 0, .facing_up = 0, .facing_left = 0, .facing_right = 0};
+    data.player = (t_player){.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2, .move_step = 0, .speed = 0.2, .turn_direction = 0, .walk_direction = 0, .flag = 0 , .rotation_angle = PI, .rotation_speed = 2 * (PI / 180)};
+    // data.ray = 
 
     data.mlx = mlx_init();
     data.mlx_new_window = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "USM4");
