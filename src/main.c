@@ -99,7 +99,7 @@ void draw_player(t_data *data)
         while (j < NUM_COLS)
         {
             if (data->map[i][j] == 'S')
-                draw_rect(data, FACTOR * data->player.x, FACTOR * data->player.y, FACTOR * (TILE_SIZE / 3), FACTOR * (TILE_SIZE / 3), 0xffffff);
+                draw_rect(data, FACTOR * data->player.x, FACTOR * data->player.y, FACTOR * (TILE_SIZE / 3), FACTOR * (TILE_SIZE / 3), 0xfcdb03);
             j++;
         }
         i++;
@@ -129,7 +129,7 @@ void draw_scene(t_data *data)
     }
 }
 
-int check_is_wall(double x, double y, t_data *data)
+int check_is_wall_rc(double x, double y, t_data *data)
 {
     int i;
     int j;
@@ -138,6 +138,21 @@ int check_is_wall(double x, double y, t_data *data)
     i = floor(y);
     j = floor(x);
     if (i <= 0 || i >= NUM_ROWS || j <= 0 || j >= NUM_COLS || data->map[i][j] == '1')
+        return (1);
+    return (0);
+}
+int check_is_wall_player(double x, double y, t_data *data)
+{
+    int i;
+    int j;
+
+    x /= TILE_SIZE;
+    y /= TILE_SIZE;
+    i = floor(y);
+    j = floor(x);
+    if (i <= 0 || i >= NUM_ROWS || j <= 0 || j >= NUM_COLS || data->map[i][j] == '1')
+        return (1);
+    if(data->map[i][j] == '1' )
         return (1);
     return (0);
 }
@@ -175,7 +190,7 @@ void horizontal(t_data *data, int i)
             decrement = 1;
         else
             decrement = 0;
-        if (check_is_wall(data->ray[i].hit.next_hx, data->ray[i].hit.next_hy - decrement, data))
+        if (check_is_wall_rc(data->ray[i].hit.next_hx, data->ray[i].hit.next_hy - decrement, data))
         {
             data->ray[i].horz_wallhit_x = data->ray[i].hit.next_hx;
             data->ray[i].horz_wallhit_y = data->ray[i].hit.next_hy;
@@ -229,7 +244,7 @@ void vertical(t_data *data, int i)
             var = 1;
         else
             var = 0;
-        if (check_is_wall(data->ray[i].hit.next_vx - var, data->ray[i].hit.next_vy, data))
+        if (check_is_wall_rc(data->ray[i].hit.next_vx - var, data->ray[i].hit.next_vy, data))
         {
             data->ray[i].vert_wallhit_x = data->ray[i].hit.next_vx;
             data->ray[i].vert_wallhit_y = data->ray[i].hit.next_vy;
@@ -253,9 +268,12 @@ void update_position(t_data *data)
 
     data->player.rotation_angle += data->player.turn_direction * data->player.rotation_speed;
     angle = data->player.rotation_angle + (data->player.flag * (PI / 2));
-    new_x =data->player.x + cos(angle) * (data->player.move_step);
-    new_y =data->player.y + sin(angle) * (data->player.move_step);
-    if (!check_is_wall(new_x, new_y, data))
+    new_x = data->player.x + cos(angle) * (data->player.move_step);
+    new_y = data->player.y + sin(angle) * (data->player.move_step);
+    if (!check_is_wall_player(new_x + 10, new_y, data) 
+    &&  !check_is_wall_player(new_x - 10, new_y, data) 
+    && !check_is_wall_player(new_x, new_y + 10, data) 
+    && !check_is_wall_player(new_x, new_y - 10, data))
     {
         data->player.move_step += data->player.walk_direction * data->player.speed;
         data->player.x = new_x;
@@ -330,7 +348,6 @@ void draw_all_lines(t_data *data, int i, double angle)
     // data->ray[i].ray_angle = nornmalize_any_angle(data->ray[i].ray_angle);
     data->ray[i].ray_angle = angle;
     facing_normalization(&data->ray[i]);
-
     horizontal(data, i);
     vertical(data, i);
     distance_normalizing(data, i);
@@ -356,6 +373,8 @@ void render_3d(t_data *data)
         //     my_mlx_pixel_put(data, i, y, 0xFFFFFF);
         //     y++;
         // }
+        if (wall_stripe_height > WINDOW_HEIGHT * 2)
+            wall_stripe_height = WINDOW_HEIGHT * 2;
         draw_rect(data, i, ((WINDOW_HEIGHT) / 2) - (wall_stripe_height / 2), 1, wall_stripe_height, 0x0);
         i++;
     }
@@ -368,13 +387,13 @@ int update_render(t_data *data)
     double angle_increment;
 
     i = 0;
+    mlx_clear_window(data->mlx, data->mlx_new_window);
     update_position(data);
     data->player.rotation_angle = nornmalize_any_angle(data->player.rotation_angle);
     angle_increment = (FOV) / (NUM_RAYS);
     angle = data->player.rotation_angle - ((FOV) / 2);
     draw_rect(data, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xfc6500);
     render_3d(data);
-    // bzero(&data->ray, sizeof(t_ray) * NUM_RAYS);
     while (i < (NUM_RAYS))
     {
         // bzero(&data->ray[i], sizeof(t_ray));
@@ -385,13 +404,13 @@ int update_render(t_data *data)
     }
     draw_scene(data);
     draw_player(data);
-    // draw_line_dda(data, FACTOR * (data->player.x), FACTOR * (data->player.y), FACTOR * (data->player.x + cos(data->player.rotation_angle) * 30), FACTOR * (data->player.y + sin(data->player.rotation_angle) * 30), 0xFF0000);
     i = 0;
     while (i < NUM_RAYS)
     {
         draw_line_dda(data, FACTOR * data->player.x, FACTOR * data->player.y, FACTOR * data->ray[i].the_x_wallhit, FACTOR * data->ray[i].the_y_wallhit, 0xfc6500);
         i++;
     }
+    draw_line_dda(data, FACTOR * (data->player.x), FACTOR * (data->player.y), FACTOR * (data->player.x + cos(data->player.rotation_angle) * 30), FACTOR * (data->player.y + sin(data->player.rotation_angle) * 30), 0xfcdb03);
     mlx_put_image_to_window(data->mlx, data->mlx_new_window, data->img_ptr, 0, 0);
     return (0);
 }
@@ -402,24 +421,21 @@ int main()
     char map[11][15] = {
         {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '1'},
-        {'1', '0', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+        {'1', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+        {'1', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '0', '0', '0', 'S', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '0', '0', '0', '1', '1', '0', '0', '1', '1', '1', '1', '1', '0', '1'},
+        {'1', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+        {'1', '0', '0', '1', '1', '1', '0', '0', '1', '1', '1', '1', '1', '0', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'}};
     data.player = (t_player){.x = WINDOW_WIDTH / 2, .y = WINDOW_HEIGHT / 2, .move_step = 0, .speed = 0.2, .turn_direction = 0, .walk_direction = 0, .flag = 0 , .rotation_angle = PI, .rotation_speed = 2 * (PI / 180)};
-    // data.ray = 
-
     data.mlx = mlx_init();
     data.mlx_new_window = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "USM4");
     data.img_ptr = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
     data.addr_ptr = mlx_get_data_addr(data.img_ptr, &data.bits_per_pixel, &data.size_line, &data.endian);
     cpy_map(&data, map);
-    // fill_rays_infos(&data);
     if (!mlx_hook(data.mlx_new_window, 2, 0, handle_keypress, &data))
         return ((perror("mlx hook failure")), 1);
     if (!mlx_hook(data.mlx_new_window, 3, 0, handle_keyrelease, &data))
