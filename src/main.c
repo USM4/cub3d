@@ -270,8 +270,8 @@ void update_position(t_data *data)
     angle = data->player.rotation_angle + (data->player.flag * (PI / 2));
     new_x = data->player.x + cos(angle) * (data->player.move_step);
     new_y = data->player.y + sin(angle) * (data->player.move_step);
-    if (!check_is_wall_player(new_x + 10, new_y, data) 
-    &&  !check_is_wall_player(new_x - 10, new_y, data) 
+    if (!check_is_wall_player(new_x + 10, new_y, data)
+    &&  !check_is_wall_player(new_x - 10, new_y, data)
     && !check_is_wall_player(new_x, new_y + 10, data) 
     && !check_is_wall_player(new_x, new_y - 10, data))
     {
@@ -297,8 +297,8 @@ void facing_normalization(t_ray *ray)
         ray->facing_right = 1;
     else
         ray->facing_left = 1;
-}
 
+}
 double nornmalize_any_angle(double angle)
 {
     angle = fmod(angle, 2 * PI);
@@ -367,12 +367,6 @@ void render_3d(t_data *data)
         fish_bowl = data->ray[i].distance * cos(data->ray[i].ray_angle - data->player.rotation_angle);
         distance_prj_plane = (WINDOW_WIDTH / 2) / tan(FOV / 2);
         wall_stripe_height = (TILE_SIZE / fish_bowl) * distance_prj_plane;
-        // int y = 0;
-        // while (y < ((WINDOW_HEIGHT) / 2) - (wall_stripe_height / 2))
-        // {
-        //     my_mlx_pixel_put(data, i, y, 0xFFFFFF);
-        //     y++;
-        // }
         if (wall_stripe_height > WINDOW_HEIGHT * 2)
             wall_stripe_height = WINDOW_HEIGHT * 2;
         draw_rect(data, i, ((WINDOW_HEIGHT) / 2) - (wall_stripe_height / 2), 1, wall_stripe_height, 0x0);
@@ -392,12 +386,15 @@ int update_render(t_data *data)
     data->player.rotation_angle = nornmalize_any_angle(data->player.rotation_angle);
     angle_increment = (FOV) / (NUM_RAYS);
     angle = data->player.rotation_angle - ((FOV) / 2);
-    draw_rect(data, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0xfc6500);
+    //ceiling and floor colorizing
+    draw_rect(data, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT / 2, 0xfc6500);
+    draw_rect(data, 0, WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT - (WINDOW_HEIGHT / 2), 0xfcdb03);
     render_3d(data);
     while (i < (NUM_RAYS))
     {
         // bzero(&data->ray[i], sizeof(t_ray));
-        data->ray[i] = (t_ray) {.the_x_wallhit = 0, .the_y_wallhit = 0, .horz_wallhit_x = 0, .horz_wallhit_y = 0, .vert_wallhit_x = 0, .vert_wallhit_y = 0, .distance = 0, .ray_angle = PI / 2, .facing_down = 0, .facing_up = 0, .facing_left = 0, .facing_right = 0};
+        data->ray[i] = (t_ray) {0};
+        // data->ray[i] = (t_ray) {.the_x_wallhit = 0, .the_y_wallhit = 0, .horz_wallhit_x = 0, .horz_wallhit_y = 0, .vert_wallhit_x = 0, .vert_wallhit_y = 0, .distance = 0, .ray_angle = PI / 2, .facing_down = 0, .facing_up = 0, .facing_left = 0, .facing_right = 0};
         draw_all_lines(data, i, nornmalize_any_angle(angle));
         angle += angle_increment;
         i++;
@@ -424,7 +421,7 @@ int main()
         {'1', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '0', '0', '0', 'S', '0', '0', '0', '0', '0', '0', '0', '1'},
-        {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+        {'1', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
         {'1', '0', '0', '1', '1', '1', '0', '0', '1', '1', '1', '1', '1', '0', '1'},
