@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/01/11 10:02:41 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/11 19:03:36 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,6 +322,48 @@ void draw_all_lines(t_data *data, int i, double angle)
 	distance_normalizing(data, i);
 }
 
+int select_texture(t_data *data, int i)
+{
+	int id;
+	id = 0;
+
+	if (data->ray[i].facing_up && data->ray->flag_h)
+		id = 0;
+	else if (data->ray[i].facing_down && data->ray->flag_h)
+		id = 1;
+	else if (data->ray[i].facing_right && data->ray->flag_v)
+		id = 2;
+	else if (data->ray[i].facing_left && data->ray->flag_v)
+		id = 3;
+	return(id);
+}
+
+void render_textures(t_data *data, int i,double wall_bottom, double wall_stripe_height)
+{
+	double texture_x;
+	double texture_y;
+
+	texture_x = 0;
+	texture_y = 0;
+	// int id = select_texture(data, i);
+	if (data->ray[i].flag_h)
+		data->offset.x = ((int)(data->ray[i].the_x_wallhit * ((double)data->textures[0].width / TILE_SIZE))) % data->textures[0].width;
+	else if (data->ray[i].flag_v)
+		data->offset.x = ((int)(data->ray[i].the_y_wallhit * ((double)data->textures[0].width / TILE_SIZE))) % data->textures[0].width;
+	texture_x = data->offset.x;
+	int color;
+	color = 0;
+	double from_top;
+	while (data->offset.y < wall_bottom)
+	{
+		from_top = data->offset.y + (wall_stripe_height / 2) - ((double)WINDOW_HEIGHT / 2);
+		texture_y = (int)((double)(from_top) * (data->textures[0].height / wall_stripe_height));
+		color = data->textures[0].arr[((int)texture_y * data->textures[0].width) + (int)texture_x];
+		my_mlx_pixel_put(data, i, data->offset.y, color);
+		data->offset.y++;
+	}
+}
+
 void render_3d(t_data *data)
 {
 	int i;
@@ -330,48 +372,27 @@ void render_3d(t_data *data)
 	double fish_bowl;
 	double wall_top;
 	double wall_bottom;
-	double texture_x;
-	double texture_y;
+
 	int index;
 
 	index = 0;
 	i = 0;
-	texture_x = 0;
-	texture_y = 0;
 	while (i < NUM_RAYS)
 	{
-		printf("%f, %f %f\n", data->ray[i].distance, data->ray[i].ray_angle - data->player.rotation_angle, cos(data->ray[i].ray_angle - data->player.rotation_angle));
 		fish_bowl = data->ray[i].distance * cos(data->ray[i].ray_angle - data->player.rotation_angle);
-		printf("%f\n", fish_bowl);
-		distance_prj_plane = ((float)WINDOW_WIDTH / 2) / tan(FOV / 2);
-		printf("%f\n", distance_prj_plane);
+		distance_prj_plane = ((double)WINDOW_WIDTH / 2) / tan(FOV / 2);
 		wall_stripe_height = (TILE_SIZE / fish_bowl) * distance_prj_plane;
 		double wallheight = wall_stripe_height;
 		if (wallheight > WINDOW_HEIGHT)
 			wallheight = WINDOW_HEIGHT;
-		wall_top = ((float)WINDOW_HEIGHT / 2) - (wallheight / 2);
-		wall_bottom = ((float)WINDOW_HEIGHT / 2) + (wallheight / 2);
-		draw_rect(data, i, (((float)WINDOW_HEIGHT) / 2) - (wallheight / 2), 1, wallheight, 0x0);
+		wall_top = ((double)WINDOW_HEIGHT / 2) - (wallheight / 2);
+		wall_bottom = ((double)WINDOW_HEIGHT / 2) + (wallheight / 2);
+		draw_rect(data, i, (((double)WINDOW_HEIGHT) / 2) - (wallheight / 2), 1, wallheight, 0x0);
 		if (wall_top < 0)
 			data->offset.y = 0;
 		else
 			data->offset.y = wall_top;
-		if (data->ray[i].flag_h)
-			data->offset.x = ((int)(data->ray[i].the_x_wallhit * ((float)data->textures[0].width / TILE_SIZE))) % data->textures[0].width;
-		else if (data->ray[i].flag_v)
-			data->offset.x = ((int)(data->ray[i].the_y_wallhit * ((float)data->textures[0].width / TILE_SIZE))) % data->textures[0].width;
-		texture_x = data->offset.x;
-		int color;
-		color = 0;
-		float from_top;
-		while (data->offset.y < wall_bottom)
-		{
-			from_top = data->offset.y + (wall_stripe_height / 2) - ((float)WINDOW_HEIGHT / 2);
-			texture_y = (int)((double)(from_top) * (data->textures[0].height / wall_stripe_height));
-			color = data->textures[0].arr[((int)texture_y * data->textures[0].width) + (int)texture_x];
-			my_mlx_pixel_put(data, i, data->offset.y, color);
-			data->offset.y++;
-		}
+		render_textures(data, i , wall_bottom, wall_stripe_height);
 		i++;
 	}
 	// exit(0);
@@ -401,7 +422,9 @@ int update_render(t_data *data)
 		angle += angle_increment;
 		i++;
 	}
+	// 3d : 
 	render_3d(data);
+	//
 	draw_scene(data);
 	draw_player(data);
 	i = 0;
@@ -414,13 +437,8 @@ int update_render(t_data *data)
 	}
 	draw_line_dda(data, FACTOR * (data->player.x), FACTOR * (data->player.y), FACTOR * (data->player.x + cos(data->player.rotation_angle) * 30), FACTOR * (data->player.y + sin(data->player.rotation_angle) * 30), 0xfcdb03);
 	mlx_put_image_to_window(data->mlx, data->mlx_new_window, data->img_ptr, 0, 0);
-	// void *ptr = mlx_xpm_file_to_image(data->mlx, "assets/wall.xpm", &data->textures[0].width, &data->textures[0].height);
 	return (0);
 }
-// void leaks()
-// {
-
-// }
 
 int main()
 {
@@ -447,16 +465,28 @@ int main()
 	data.addr_ptr = mlx_get_data_addr(data.img_ptr, &data.bits_per_pixel,
 									  &data.size_line, &data.endian);
 	cpy_map(&data, map);
-	int tmp;
-	data.textures[0].img = mlx_xpm_file_to_image(data.mlx, "assets/wall.xpm", &data.textures[0].width,
-												 &data.textures[0].height);
-	data.textures[0].arr = (uint32_t *)mlx_get_data_addr(data.textures[0].img, &tmp, &tmp, &tmp);
 	if (!mlx_hook(data.mlx_new_window, 2, 0, handle_keypress, &data))
 		return ((perror("mlx hook failure")), 1);
 	if (!mlx_hook(data.mlx_new_window, 3, 0, handle_keyrelease, &data))
 		return ((perror("mlx hook failure")), 1);
 	if (!mlx_hook(data.mlx_new_window, 17, 0, quit_window, &data))
 		return ((perror("mlx hook failure")), 1);
+	int tmp;
+	int tmp1;
+	int tmp2;
+	int tmp3;
+	data.textures[0].n_img = mlx_xpm_file_to_image(data.mlx, "assets/wall.xpm", &data.textures[0].width,
+							&data.textures[0].height);
+	data.textures[1].s_img = mlx_xpm_file_to_image(data.mlx, "assets/wall1.xpm", &data.textures[1].width,
+							&data.textures[1].height);
+	data.textures[2].e_img = mlx_xpm_file_to_image(data.mlx, "assets/wall2.xpm", &data.textures[2].width,
+							&data.textures[2].height);
+	data.textures[3].w_img = mlx_xpm_file_to_image(data.mlx, "assets/wall3.xpm", &data.textures[3].width,
+							&data.textures[3].height);
+	data.textures[0].arr = (uint32_t *)mlx_get_data_addr(data.textures[0].n_img, &tmp, &tmp, &tmp);
+	data.textures[1].arr = (uint32_t *)mlx_get_data_addr(data.textures[1].s_img, &tmp1, &tmp1, &tmp1);
+	data.textures[2].arr = (uint32_t *)mlx_get_data_addr(data.textures[2].e_img, &tmp2, &tmp2, &tmp2);
+	data.textures[3].arr = (uint32_t *)mlx_get_data_addr(data.textures[3].w_img, &tmp3, &tmp3, &tmp3);
 	mlx_loop_hook(data.mlx, update_render, &data);
 	mlx_loop(data.mlx);
 }

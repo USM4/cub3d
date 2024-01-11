@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/10 12:17:43 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/11 17:02:01 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ typedef struct s_textures
     double y;
     int height;
     int width;
-    void *img;
+    void *n_img;
+    void *s_img;
+    void *e_img;
+    void *w_img;
     uint32_t *arr;
 } t_textures;
 
