@@ -6,25 +6,28 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 00:19:17 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/07 00:24:44 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:29:56 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
-	char *dst;
+	char	*dst;
+
 	if (x < 0 || y < 0 || x >= WINDOW_WIDTH || y >= WINDOW_HEIGHT)
-		return;
-	dst = data->addr_ptr + (y * data->size_line + x * (data->bits_per_pixel / 8));
+		return ;
+	dst = data->addr_ptr + (y * data->size_line + x * \
+	(data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }
 
-void draw_rect(t_data *data, double x, double y, double width, double height, int color)
+void	draw_rect(t_data *data, double x, double y, double width, \
+		double height, int color)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = y;
 	while (i < y + height)
@@ -39,28 +42,10 @@ void draw_rect(t_data *data, double x, double y, double width, double height, in
 	}
 }
 
-int my_own_round(double num)
+char	**allocate_the_map(void)
 {
-	double fractional_part;
-
-	fractional_part = num - (int)num;
-	if (fractional_part >= 0.5)
-		return ((int)(num + 1.0));
-	else
-		return ((int)num);
-}
-
-int my_own_abs(int num)
-{
-	if (num < 0)
-		num *= -1;
-	return (num);
-}
-
-char **allocate_the_map()
-{
-	char **cpy;
-	int i;
+	char	**cpy;
+	int		i;
 
 	i = 0;
 	cpy = malloc(sizeof(char *) * (NUM_ROWS + 1));
@@ -82,10 +67,10 @@ char **allocate_the_map()
 	return (cpy);
 }
 
-void cpy_map(t_data *data, char map[NUM_ROWS][NUM_COLS])
+void	cpy_map(t_data *data, char map[NUM_ROWS][NUM_COLS])
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	data->map = allocate_the_map();
@@ -94,7 +79,6 @@ void cpy_map(t_data *data, char map[NUM_ROWS][NUM_COLS])
 		j = 0;
 		while (j < NUM_COLS)
 		{
-
 			data->map[i][j] = map[i][j];
 			j++;
 		}
@@ -103,7 +87,8 @@ void cpy_map(t_data *data, char map[NUM_ROWS][NUM_COLS])
 	}
 	data->map[i] = NULL;
 }
-int quit_window()
+
+int	quit_window(void)
 {
 	exit(0);
 }

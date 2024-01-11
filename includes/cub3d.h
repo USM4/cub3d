@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/07 05:41:12 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/10 12:17:43 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@
 #define FOV 60 * (PI / 180)
 #define NUM_RAYS WINDOW_WIDTH
 #define FACTOR 0.2
+
+typedef struct s_textures
+{
+    double x;
+    double y;
+    int height;
+    int width;
+    void *img;
+    uint32_t *arr;
+} t_textures;
 
 typedef struct s_intersections
 {
@@ -76,6 +86,8 @@ typedef struct s_ray
     int facing_up;
     int facing_right;
     int facing_left;
+    int flag_v;
+    int flag_h;
     t_intersections hit;
 } t_ray;
 
@@ -104,6 +116,8 @@ typedef struct s_data
     t_tile tile;
     t_dda line;
     t_ray ray[NUM_RAYS];
+    t_textures offset;
+    t_textures textures[4];
 } t_data;
 
 extern void my_mlx_pixel_put(t_data *data, int x, int y, int color);
