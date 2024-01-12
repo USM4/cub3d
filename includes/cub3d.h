@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/12 15:24:02 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/12 19:45:51 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
 # include <mlx.h>
 # include <math.h>
 # include <unistd.h>
-# define TILE_SIZE 64
+# define TILE_SIZE 64 //!!
 # define NUM_ROWS 11
 # define NUM_COLS 15
 # define PI 3.14159265359
-# define WINDOW_HEIGHT TILE_SIZE * NUM_ROWS
-# define WINDOW_WIDTH TILE_SIZE * NUM_COLS
+# define WINDOW_HEIGHT TILE_SIZE * NUM_ROWS //!!
+# define WINDOW_WIDTH TILE_SIZE * NUM_COLS //!!
 # define FOV 60 * (PI / 180)
-# define NUM_RAYS WINDOW_WIDTH
+# define NUM_RAYS WINDOW_WIDTH //!!
 # define FACTOR 0.2
 
 // typedef struct s_draw

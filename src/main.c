@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 10:46:05 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/12 17:49:34 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/12 19:59:30 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,39 +262,39 @@ int	select_texture(t_data *data, int i)
 	return (id);
 }
 
-void render_textures(t_data *data, int i, double wall_bottom, double wall_stripe_height)
-{
-	double	texture_x;
-	double	texture_y;
-	double	from_top;
-	int		color;
-	int		id;
+// void render_textures(t_data *data, int i, double wall_bottom, double wall_stripe_height)
+// {
+// 	double	texture_x;
+// 	double	texture_y;
+// 	double	from_top;
+// 	int		color;
+// 	int		id;
 
-	texture_x = 0;
-	texture_y = 0;
-	color = 0;
-	id = select_texture(data, i);
-	if (data->ray[i].flag_h)
-		data->offset.x = ((int)(data->ray[i].the_x_wallhit * \
-		((double)data->textures[id].width / TILE_SIZE))) % \
-		data->textures[id].width;
-	else if (data->ray[i].flag_v)
-		data->offset.x = ((int)(data->ray[i].the_y_wallhit * \
-		((double)data->textures[id].width \
-		/ TILE_SIZE))) % data->textures[id].width;
-	texture_x = data->offset.x;
-	while (data->offset.y < wall_bottom)
-	{
-		from_top = data->offset.y + (wall_stripe_height / 2) \
-		- ((double)WINDOW_HEIGHT / 2);
-		texture_y = (int)((double)(from_top) *\
-		(data->textures[id].height / wall_stripe_height));
-		color = data->textures[id].arr[((int)texture_y * \
-		data->textures[id].width) + (int)texture_x];
-		my_mlx_pixel_put(data, i, data->offset.y, color);
-		data->offset.y++;
-	}
-}
+// 	texture_x = 0;
+// 	texture_y = 0;
+// 	color = 0;
+// 	id = select_texture(data, i);
+// 	if (data->ray[i].flag_h)
+// 		data->offset.x = ((int)(data->ray[i].the_x_wallhit * \
+// 		((double)data->textures[id].width / TILE_SIZE))) % \
+// 		data->textures[id].width;
+// 	else if (data->ray[i].flag_v)
+// 		data->offset.x = ((int)(data->ray[i].the_y_wallhit * \
+// 		((double)data->textures[id].width \
+// 		/ TILE_SIZE))) % data->textures[id].width;
+// 	texture_x = data->offset.x;
+// 	while (data->offset.y < wall_bottom)
+// 	{
+// 		from_top = data->offset.y + (wall_stripe_height / 2) \
+// 		- ((double)WINDOW_HEIGHT / 2);
+// 		texture_y = (int)((double)(from_top) *\
+// 		(data->textures[id].height / wall_stripe_height));
+// 		color = data->textures[id].arr[((int)texture_y * \
+// 		data->textures[id].width) + (int)texture_x];
+// 		my_mlx_pixel_put(data, i, data->offset.y, color);
+// 		data->offset.y++;
+// 	}
+// }
 
 void render_3d(t_data *data)
 {
@@ -302,28 +302,32 @@ void render_3d(t_data *data)
 	double	distance_prj_plane;
 	double	wall_stripe_height;
 	double	fish_bowl;
-	double	wall_top;
-	double	wall_bottom;
+	// double	wall_top;
+	// double	wall_bottom;
 	double	wallheight;
 
 	i = 0;
 	wallheight = 0;
 	while (i < NUM_RAYS)
 	{
-		fish_bowl = data->ray[i].distance * cos(data->ray[i].ray_angle \
-		- data->player.rotation_angle);
+		//here 3d projection 
+		fish_bowl = data->ray[i].distance * cos(data->ray[i].ray_angle - data->player.rotation_angle);
 		distance_prj_plane = ((double)WINDOW_WIDTH / 2) / tan(FOV / 2);
 		wall_stripe_height = (TILE_SIZE / fish_bowl) * distance_prj_plane;
-		wallheight = wall_stripe_height;
-		if (wallheight > WINDOW_HEIGHT)
-			wallheight = WINDOW_HEIGHT;
-		wall_top = ((double)WINDOW_HEIGHT / 2) - (wallheight / 2);
-		wall_bottom = ((double)WINDOW_HEIGHT / 2) + (wallheight / 2);
-		if (wall_top < 0)
-			data->offset.y = 0;
-		else
-			data->offset.y = wall_top;
-		render_textures(data, i, wall_bottom, wall_stripe_height);
+		draw_rect(data, i, (((float)WINDOW_HEIGHT) / 2) - (wall_stripe_height / 2), 1, wall_stripe_height, 0x0); /// start texture heeeere
+
+		
+		// here textures
+		// wallheight = wall_stripe_height;
+		// if (wallheight > WINDOW_HEIGHT)
+		// 	wallheight = WINDOW_HEIGHT;
+		// wall_top = ((double)WINDOW_HEIGHT / 2) - (wallheight / 2);
+		// wall_bottom = ((double)WINDOW_HEIGHT / 2) + (wallheight / 2);
+		// if (wall_top < 0)
+		// 	data->offset.y = 0;
+		// else
+		// 	data->offset.y = wall_top;
+		// render_textures(data, i, wall_bottom, wall_stripe_height);
 		i++;
 	}
 }
@@ -341,7 +345,7 @@ int	update_render(t_data *data)
 	nornmalize_any_angle(data->player.rotation_angle);
 	angle_increment = (FOV) / (NUM_RAYS);
 	angle = data->player.rotation_angle - ((FOV) / 2);
-	draw_rect(data, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT / 2, 0x0);
+	draw_rect(data, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT / 2, 0xffffff);
 	draw_rect(data, 0, WINDOW_HEIGHT / 2, WINDOW_WIDTH, \
 	WINDOW_HEIGHT - (WINDOW_HEIGHT / 2), 0x054d14);
 	while (i < (NUM_RAYS))
