@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map_errors.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 04:36:06 by hlabouit          #+#    #+#             */
-/*   Updated: 2024/01/08 01:05:38 by hlabouit         ###   ########.fr       */
+/*   Updated: 2024/01/12 19:16:36 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ void	check_map_extension(char **av)
 		display_errors(101);
 }
 
-void	check_map_characters(char **map_code)
-{
-	t_dimention dmt;
 
+void	check_map_characters(char **map_code, t_dimention dmt)
+{
+	
 	dmt.flag = 0;
-	dmt.i = 0;
+	// printf("[%c]\n", map_code[dmt.i][0]);
+            // exit(0);
 	while (map_code[dmt.i])
 	{
 		dmt.j = 0;
@@ -52,6 +53,7 @@ void	check_map_characters(char **map_code)
 	if (dmt.flag != 1)
 		display_errors2(606);
 }
+
 
 
 char	**create_virtual_map(char **map_code)
@@ -88,25 +90,33 @@ char	**create_virtual_map(char **map_code)
 	return (virtual_map);
 }
 
-void	check_map_4sides_wall(char **virtual_map)
+void	check_map_4sides_wall(char **virtual_map, t_dimention dmt)
 {
-	t_dimention dmt;
-
-	dmt = get_mc_dimentios(virtual_map);
-	dmt.i = 0;
+	int mc_first_line = dmt.i;
+	
 	while (dmt.i < dmt.lines)
 	{
 		if ((virtual_map[dmt.i][0] != '1' && virtual_map[dmt.i][0] != ' ')
 			|| (virtual_map[dmt.i][dmt.longest_line - 1] != '1'
 				&& virtual_map[dmt.i][dmt.longest_line - 1] != ' '))
+				{
+					printf("sides[%d]\n", dmt.i);
+					printf("[%s]\n", virtual_map[dmt.i]);
+					
 					display_errors2(707);
+				}
 		dmt.j = 0;
 		while (dmt.j < dmt.longest_line)
 		{
-			if ((virtual_map[0][dmt.j] != '1' && virtual_map[0][dmt.j] != ' ')
+			if ((virtual_map[mc_first_line][dmt.j] != '1' && virtual_map[mc_first_line][dmt.j] != ' ')
 				|| (virtual_map[dmt.lines - 1][dmt.j] != '1'
 					&& virtual_map[dmt.lines - 1][dmt.j] != ' '))
+					{
+						printf("updown[%d]\n", dmt.i);
+						printf("char[%c]\n", virtual_map[dmt.lines - 1][dmt.j]);
+						printf("[%s]\n", virtual_map[dmt.i]);
 						display_errors2(707);
+					}
 			dmt.j++;
 		}
 		dmt.i++;
@@ -114,12 +124,8 @@ void	check_map_4sides_wall(char **virtual_map)
 }
 
 
-void	check_map_wall(char **virtual_map)
+void	check_map_wall(char **virtual_map, t_dimention dmt)
 {
-	t_dimention dmt;
-
-	dmt = get_mc_dimentios(virtual_map);
-	dmt.i = 0;
 	while (virtual_map[dmt.i])
 	{
 		dmt.j = 0;

@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 00:19:17 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/10 11:29:56 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/12 15:05:26 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	draw_rect(t_data *data, double x, double y, double width, \
-		double height, int color)
+void	draw_rect(t_data *data, double x, double y, double width, double height, int color)
 {
 	int	i;
 	int	j;

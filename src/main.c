@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 10:46:05 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/12 14:11:15 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/12 17:49:34 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	draw_line_dda(t_data *data, double x1, double y1,
 		data->line.steps--;
 	}
 }
+
 int	handle_keypress(int keycode, t_data *data)
 {
 	if (keycode == 123)
@@ -79,6 +80,11 @@ int	handle_keyrelease(int keycode, t_data *data)
 	}
 	return (0);
 }
+
+// void	fill_draw_members(double x, double y, double width, double height)
+// {
+		
+// }
 
 void	draw_player(t_data *data)
 {
@@ -148,7 +154,7 @@ void horizontal(t_data *data, int i)
 		data->ray[i].hit.x_step *= -1;
 	data->ray[i].hit.next_hx = data->ray[i].hit.x_point;
 	data->ray[i].hit.next_hy = data->ray[i].hit.y_point;
-	while (data->ray[i].hit.next_hx >= 0 && data->ray[i].hit.next_hx <= WINDOW_WIDTH && data->ray[i].hit.next_hy >= 0 && data->ray[i].hit.next_hy <= WINDOW_HEIGHT)
+		while (data->ray[i].hit.next_hx >= 0 && data->ray[i].hit.next_hx <= WINDOW_WIDTH && data->ray[i].hit.next_hy >= 0 && data->ray[i].hit.next_hy <= WINDOW_HEIGHT)
 	{
 		if (data->ray[i].facing_up == 1)
 			decrement = 1;
@@ -205,7 +211,7 @@ void vertical(t_data *data, int i)
 		{
 			data->ray[i].vert_wallhit_x = data->ray[i].hit.next_vx;
 			data->ray[i].vert_wallhit_y = data->ray[i].hit.next_vy;
-			break;
+			break ;
 		}
 		else
 		{
@@ -337,7 +343,7 @@ int	update_render(t_data *data)
 	angle = data->player.rotation_angle - ((FOV) / 2);
 	draw_rect(data, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT / 2, 0x0);
 	draw_rect(data, 0, WINDOW_HEIGHT / 2, WINDOW_WIDTH, \
-	WINDOW_HEIGHT - (WINDOW_HEIGHT / 2), 0x031880);
+	WINDOW_HEIGHT - (WINDOW_HEIGHT / 2), 0x054d14);
 	while (i < (NUM_RAYS))
 	{
 		data->ray[i] = (t_ray){0};
@@ -390,6 +396,7 @@ int main()
 	.walk_direction = 0, .flag = 0, \
 	.rotation_angle = PI / 2, .rotation_speed = 5 * (PI / 180)};
 	data.offset = (t_textures){0};
+	// data.draw = (t_draw){0};
 	data.mlx = mlx_init();
 	data.mlx_new_window = mlx_new_window(data.mlx, WINDOW_WIDTH,
 			WINDOW_HEIGHT, "USM4");

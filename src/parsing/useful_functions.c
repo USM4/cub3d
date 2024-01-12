@@ -6,7 +6,7 @@
 /*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 00:24:48 by hlabouit          #+#    #+#             */
-/*   Updated: 2024/01/07 22:42:57 by hlabouit         ###   ########.fr       */
+/*   Updated: 2024/01/12 17:31:02 by hlabouit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ char	**join_map_code(int fd)
 		mc_1d = ft_strjoin_prs(mc_1d, buf);
 		i = read(fd, buf, 1);
 		buf[i] = 0;
-		if (mc_1d[0] == '\n'
-			|| (mc_1d[ft_strlen_prs(mc_1d) - 1] == '\n' && buf[0] == '\n'))
-			display_errors2(808);
+		// if (mc_1d[0] == '\n'
+		// 	|| (mc_1d[ft_strlen_prs(mc_1d) - 1] == '\n' && buf[0] == '\n'))
+		// 	display_errors2(808);
 	}
 	if (mc_1d[ft_strlen_prs(mc_1d) - 1] == '\n')
 		display_errors2(808);
@@ -54,8 +54,10 @@ char get_start_point(char **map_code)
 		j = 0;
 		while (map_code[i][j])
 		{
-			if (map_code[i][j] == 'N' || map_code[i][j] == 'S'
-				|| map_code[i][j] == 'E' || map_code[i][j] == 'W')
+			if ((map_code[i][j] == 'N' && (map_code[i][j + 1] == '0' || map_code[i][j + 1] == '1'))
+				|| (map_code[i][j] == 'S' && (map_code[i][j + 1] == '0' || map_code[i][j + 1] == '1'))
+				|| (map_code[i][j] == 'W' && (map_code[i][j + 1] == '0' || map_code[i][j + 1] == '1'))
+				|| (map_code[i][j] == 'E' && (map_code[i][j + 1] == '0' || map_code[i][j + 1] == '1'))) 
 			{
 				start_point = map_code[i][j]; 
 				return (start_point);
@@ -83,6 +85,7 @@ t_dimention	get_mc_dimentios(char **map_code)
 		dmt.i++;
 	}
 	dmt.lines = dmt.i;
+	// printf("---------------[%d]------------\n", dmt.lines);
 	return (dmt);
 }
 

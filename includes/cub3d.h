@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/12 14:16:13 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/12 15:24:02 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,13 @@
 # define NUM_RAYS WINDOW_WIDTH
 # define FACTOR 0.2
 
-
+// typedef struct s_draw
+// {
+// 	double	x;
+// 	double	y;
+// 	double	width;
+// 	double	height;
+// }	t_draw;
 
 typedef struct s_textures
 {
