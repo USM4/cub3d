@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.c                                           :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/10 11:29:04 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/13 22:33:26 by oredoine         ###   ########.fr       */
+/*   Created: 2023/12/19 01:20:11 by hlabouit          #+#    #+#             */
+/*   Updated: 2024/01/14 19:28:58 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include"parsing.h"
 
-int	my_own_round(double num)
-{
-	double	fractional_part;
 
-	fractional_part = num - (int)num;
-	if (fractional_part >= 0.5)
-		return ((int)(num + 1.0));
-	else
-		return ((int)num);
-}
+// void lol()
+// {
+// 	system("leaks parsing");
+// }
 
-int	my_own_abs(int num)
-{
-	if (num < 0)
-		num *= -1;
-	return (num);
-}
+
+
+// char	**parsing(int ac, char **av)
+// {
+	
+// 	return(map_code);
+// }

@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 11:30:28 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/12 11:33:45 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/14 20:20:21 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ int	check_is_wall(double x, double y, t_data *data)
 	y /= TILE_SIZE;
 	i = floor(y);
 	j = floor(x);
-	if (i <= 0 || i >= NUM_ROWS || j <= 0 || \
-		j >= NUM_COLS || data->map[i][j] == '1')
+	if (i <= 0 || i >= data->bridge.num_rows || j <= 0 || \
+		j >= data->bridge.longest_line || data->map[i][j] == '1')
 		return (1);
 	return (0);
 }

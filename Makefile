@@ -1,10 +1,13 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
 NAME = cub
 GREEN = \033[32m
 COLOR_OFF = \033[0m
-SOURCES = ./src/main.c ./src/utils/utils.c ./src/utils/utils2.c ./src/raycasting/raycasting_utils.c \
-		./src/raycasting/raycasting_utils2.c
+SOURCES = ./src/main.c ./src/parsing/check_map_errors.c ./src/parsing/check_map_errors2.c ./src/parsing/useful_functions.c \
+		./src/parsing/display_errors.c ./src/parsing/libft_functions.c ./src/parsing/libft_functions2.c \
+		./src/parsing/libft_functions3.c ./src/utils/utils.c ./src/utils/utils2.c ./src/raycasting/raycasting_utils.c \
+		./src/raycasting/raycasting_utils2.c ./src/raycasting/raycasting.c ./src/textures/textures.c ./src/move_events/drawing.c \
+		./src/move_events/events.c 
 INCLUDES =  ./includes/cub3d.h
 OBJECTS = $(SOURCES:.c=.o)
 
