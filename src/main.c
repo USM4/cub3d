@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 10:46:05 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/15 19:44:53 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/15 19:51:37 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,11 @@ void	initialize_player_position(t_data *data)
 	data->player.y = (i * TILE_SIZE) - (TILE_SIZE / 2);
 }
 
-void set_facing(t_data *data, char c)
+void	initialize_player_facing(t_data *data)
 {
+	char c;
+
+	c = get_start_point(data->map);
 	if (c == 'N')
 		data->player.rotation_angle = 1.5 * PI;
 	else if(c == 'S') 
@@ -131,35 +134,6 @@ void set_facing(t_data *data, char c)
 		data->player.rotation_angle = 0;
 	else if(c == 'W') 
 		data->player.rotation_angle = PI;
-}
-
-void	initialize_player_facing(t_data *data)
-{
-	int	i;
-	int	j;
-	int	flag;
-
-	i = 0;
-	flag = 0;
-	while (data->map[i])
-	{
-		j = 0;
-		while (data->map[i][j])
-		{
-		
-			if (data->map[i][j] == 'N' || data->map[i][j] == 'S' || \
-			data->map[i][j] == 'E' || data->map[i][j] == 'W')
-			{
-				flag = 1;
-				break ;
-			}
-			j++;
-		}
-		if(flag)
-			break ;
-		i++;
-	}
-	set_facing(data, data->map[i][j]);
 }
 
 int main(int ac, char **av)

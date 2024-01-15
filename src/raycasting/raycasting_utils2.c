@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 11:41:18 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/15 17:33:21 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/15 19:54:53 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ void	loop_for_vert_intersection(t_data *data, int i)
 
 	var = 0;
 	while ((data->ray[i].hit.next_vx >= 0 && data->ray[i].hit.next_vx \
-	<= (data->bridge.longest_line * TILE_SIZE)) && (data->ray[i].hit.next_vy >= 0 && \
+	<= (data->bridge.longest_line * TILE_SIZE)) && \
+	(data->ray[i].hit.next_vy >= 0 && \
 	data->ray[i].hit.next_vy <= (data->bridge.num_rows * TILE_SIZE)))
 	{
 		if (data->ray[i].facing_left == 1)
