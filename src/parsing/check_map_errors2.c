@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 22:24:07 by hlabouit          #+#    #+#             */
-/*   Updated: 2024/01/14 18:32:00 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:56:18 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void which_element(char **element, char *texture_path)
 
 void set_element_data(char *texture_path, t_elements *elmt, char identifier)
 {
-	
 	if (identifier == 'N')
 		which_element(&elmt->no_path, texture_path);
 	else if (identifier == 'S')
@@ -63,7 +62,6 @@ int check_pointer_state(t_elements *elmt)
 		&& elmt->floor_color && elmt->ceiling_color)
 			return (1);
 	return (0);
-	
 }
 
 int check_for_each_element(char *map_content, t_dimention *dmt)
@@ -236,5 +234,7 @@ t_dimention  check_map_elements(char **map_content, char *mc_1d)
 	// printf("[%s]\n", elmt.ea_path);
 	// printf("[%s]\n", elmt.floor_color);
 	// printf("[%s]\n", elmt.ceiling_color);
+	// exit(0);
+	dmt.test = elmt;//you should copy this elmt to the final struct
 	return(dmt);
 }

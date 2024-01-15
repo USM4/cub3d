@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 21:22:17 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/14 21:00:14 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:56:31 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	update_game_state(t_data *data)
 	, .height = data->val.window_height / 2, .color = 0x0};
 	draw_rect(data);
 	data->params = (t_draw){.x = 0, .y = data->val.window_height / 2, .width = \
-	data->val.window_width, .height = data->val.window_height - (data->val.window_height / 2), \
+	data->val.window_width, .height = data->val.window_height \
+	- (data->val.window_height / 2), \
 	.color = 0x054d14};
 	draw_rect(data);
 	while (i < data->val.window_width)

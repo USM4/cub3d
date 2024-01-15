@@ -42,7 +42,7 @@ Resources:
 ![Alt text](<Screen Shot 2023-12-23 at 1.20.34 AM.png>)
 
 *********************
--> Substract 30 degrees  from the player rotaion angle (Field of view)FOV / 2.  
+->  Substract 30 degrees from the player rotaion angle (Field of view)FOV / 2.  
 -> Start at column 0.  
  # Horizontal Intersections  
   

@@ -6,14 +6,14 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 10:46:05 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/14 21:12:16 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/15 15:23:57 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void draw_line_dda(t_data *data, double x1, double y1,
-				   double x2, double y2, int color)
+void	draw_line_dda(t_data *data, double x1, double y1,\
+double x2, double y2, int color)
 {
 	data->line.diff_x = x2 - x1;
 	data->line.diff_y = y2 - y1;
@@ -21,74 +21,82 @@ void draw_line_dda(t_data *data, double x1, double y1,
 		data->line.steps = my_own_abs(data->line.diff_x);
 	else
 		data->line.steps = my_own_abs(data->line.diff_y);
-	data->line.x_increment = (float)(data->line.diff_x) /
-							 (float)(data->line.steps);
+	data->line.x_increment = (float)(data->line.diff_x) / \
+				(float)(data->line.steps);
 	data->line.y_increment = (float)data->line.diff_y / (float)data->line.steps;
 	data->line.x = (float)x1;
 	data->line.y = (float)y1;
-	my_mlx_pixel_put(data, my_own_round(data->line.x),
-					 my_own_round(data->line.y), color);
+	my_mlx_pixel_put(data, my_own_round(data->line.x), \
+		my_own_round(data->line.y), color);
 	while (data->line.steps > 0)
 	{
 		data->line.x += data->line.x_increment;
 		data->line.y += data->line.y_increment;
 		my_mlx_pixel_put(data, my_own_round(data->line.x),
-						 my_own_round(data->line.y), color);
+			my_own_round(data->line.y), color);
 		data->line.steps--;
 	}
 }
 
-void initialize_mlx_ingredients2(t_data *data)
+void	initialize_mlx_ingredients2(t_data *data)
 {
-	int tmp;
+	int	tmp;
 
 	data->textures[0].n_img = mlx_xpm_file_to_image(data->mlx,
-													"assets/wall.xpm", &data->textures[0].width, &data->textures[0].height);
+			data->bridge.test.no_path, &data->textures[0].width, \
+			&data->textures[0].height);
 	data->textures[1].s_img = mlx_xpm_file_to_image(data->mlx,
-													"assets/wall1.xpm", &data->textures[1].width, &data->textures[1].height);
+			data->bridge.test.so_path, &data->textures[1].width, \
+			&data->textures[1].height);
 	data->textures[2].e_img = mlx_xpm_file_to_image(data->mlx,
-													"assets/wall2.xpm", &data->textures[2].width, &data->textures[2].height);
+			data->bridge.test.ea_path, &data->textures[2].width, \
+			&data->textures[2].height);
 	data->textures[3].w_img = mlx_xpm_file_to_image(data->mlx,
-													"assets/wall3.xpm", &data->textures[3].width, &data->textures[3].height);
-	data->textures[0].arr = (uint32_t *)mlx_get_data_addr(data->textures[0].n_img, &tmp, &tmp, &tmp);
-	data->textures[1].arr = (uint32_t *)mlx_get_data_addr(data->textures[1].s_img, &tmp, &tmp, &tmp);
-	data->textures[2].arr = (uint32_t *)mlx_get_data_addr(data->textures[2].e_img, &tmp, &tmp, &tmp);
-	data->textures[3].arr = (uint32_t *)mlx_get_data_addr(data->textures[3].w_img, &tmp, &tmp, &tmp);
+			data->bridge.test.we_path, &data->textures[3].width, \
+			&data->textures[3].height);
+	data->textures[0].arr = (uint32_t *)mlx_get_data_addr(data->textures[0] \
+	.n_img, &tmp, &tmp, &tmp);
+	data->textures[1].arr = (uint32_t *)mlx_get_data_addr(data->textures[1] \
+	.s_img, &tmp, &tmp, &tmp);
+	data->textures[2].arr = (uint32_t *)mlx_get_data_addr(data->textures[2] \
+	.e_img, &tmp, &tmp, &tmp);
+	data->textures[3].arr = (uint32_t *)mlx_get_data_addr(data->textures[3] \
+	.w_img, &tmp, &tmp, &tmp);
 }
 
-void initialize_my_structs(t_data *data)
+void	initialize_my_structs(t_data *data)
 {
 	data->val = (t_utils){.window_height = (TILE_SIZE * data->bridge.num_rows),
-						  .window_width = (TILE_SIZE * data->bridge.longest_line),
-						  .fov = (60 * (PI / 180))};
+		.window_width = (TILE_SIZE * data->bridge.longest_line),
+		.fov = (60 * (PI / 180))};
 	data->player = (t_player){.x = data->val.window_width / 2,
-							  .y = data->val.window_height / 2,
-							  .move_step = 0,
-							  .speed = 2,
-							  .turn_direction = 0,
-							  .walk_direction = 0,
-							  .flag = 0,
-							  .rotation_angle = PI / 2,
-							  .rotation_speed = 7 * (PI / 180)};
+		.y = data->val.window_height / 2,
+		.move_step = 0,
+		.speed = 3,
+		.turn_direction = 0,
+		.walk_direction = 0,
+		.flag = 0,
+		.rotation_angle = PI / 2,
+		.rotation_speed = 5 * (PI / 180)};
 	data->offset = (t_textures){0};
 	data->params = (t_draw){0};
 }
 
-int num_rows_counter(char **map)
+int	num_rows_counter(char **map)
 {
-	int count;
+	int	count;
 
 	count = 0;
-	while(map[count])
+	while (map[count])
 		count++;
-	return(count);
+	return (count);
 }
 
-void initialize_player_position(t_data *data)
+void	initialize_player_position(t_data *data)
 {
-	int i;
-	int j;
-	int flag;
+	int	i;
+	int	j;
+	int	flag;
 
 	i = 0;
 	flag = 0;
@@ -101,30 +109,33 @@ void initialize_player_position(t_data *data)
 			data->map[i][j] == 'E' || data->map[i][j] == 'W')
 			{
 				flag = 1;
-				break;
+				break ;
 			}
 			j++;
 		}
 		if (flag)
-			break;
+			break ;
 		i++;
 	}
 	data->player.x = j * TILE_SIZE;
 	data->player.y = i * TILE_SIZE;
 }
 
-
 int main(int ac, char **av)
 {
-	t_data data;
-	char **map_content;
-	char *mc_1d;
-	char **map_code; // here's the returned map code
-	char **virtual_map;
-	int fd;
-	t_dimention dmt;
-	int i = 0;
+	t_data		data;
+	char		**map_content;
+	char		*mc_1d;
+	char		**map_code;
+	char		**virtual_map;
+	int			fd;
+	t_dimention	dmt;
+	t_elements	test;
+	int 		i;
+
+	i = 0;
 	dmt = (t_dimention){0};
+	test = (t_elements){0};
 	if (ac < 2)
 		display_errors(303);
 	check_map_extension(av);
@@ -151,16 +162,19 @@ int main(int ac, char **av)
 	cpy_map(&data, map_code);
 	initialize_player_position(&data);
 	data.mlx = mlx_init();
-	data.mlx_new_window = mlx_new_window(data.mlx, data.val.window_width, data.val.window_height, "USM4");
-	data.img_ptr = mlx_new_image(data.mlx, data.val.window_width, data.val.window_height);
+	data.mlx_new_window = mlx_new_window(data.mlx, \
+	data.val.window_width, data.val.window_height, "USM4");
+	data.img_ptr = mlx_new_image(data.mlx, \
+	data.val.window_width, data.val.window_height);
 	data.addr_ptr = mlx_get_data_addr(data.img_ptr, &data.bits_per_pixel,
-									  &data.size_line, &data.endian);
+			&data.size_line, &data.endian);
 	if (!mlx_hook(data.mlx_new_window, 2, 0, handle_keypress, &data))
 		return ((perror("mlx hook failure")), 1);
 	if (!mlx_hook(data.mlx_new_window, 3, 0, handle_keyrelease, &data))
 		return ((perror("mlx hook failure")), 1);
 	if (!mlx_hook(data.mlx_new_window, 17, 0, quit_window, &data))
 		return ((perror("mlx hook failure")), 1);
+	// printf("ceiling %s \n", data.bridge.test.ceiling_color);
 	initialize_mlx_ingredients2(&data);
 	mlx_loop_hook(data.mlx, update_render, &data);
 	mlx_loop(data.mlx);

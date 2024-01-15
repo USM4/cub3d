@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 11:41:18 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/14 20:03:05 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:32:44 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	loop_for_hz_intersection(t_data *data, int i)
 	decrement = 0;
 	while (data->ray[i].hit.next_hx >= 0 && \
 	data->ray[i].hit.next_hx <= data->val.window_width && \
-	data->ray[i].hit.next_hy >= 0 && data->ray[i].hit.next_hy <= data->val.window_height)
+	data->ray[i].hit.next_hy >= 0 && data->ray[i].hit.next_hy \
+	<= data->val.window_height)
 	{
 		if (data->ray[i].facing_up == 1)
 			decrement = 1;

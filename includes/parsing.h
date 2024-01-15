@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 00:19:54 by hlabouit          #+#    #+#             */
-/*   Updated: 2024/01/14 17:29:24 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:56:24 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct t_dimention
 	int		i;
 	int		j;
 	int		flag;
+	t_elements test;
 }t_dimention;
 
 
