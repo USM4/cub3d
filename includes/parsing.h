@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 00:19:54 by hlabouit          #+#    #+#             */
-/*   Updated: 2024/01/15 13:56:24 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/15 19:27:12 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ typedef struct t_dimention
 	t_elements test;
 }t_dimention;
 
-
 char		*join_map_content(int fd);
 void		check_map_extension(char **av);
 void		check_map_characters(char **map_content, t_dimention dmt);
+
 void		check_map_wall(char **virtual_map, t_dimention dmt);
 void		check_map_4sides_wall(char **virtual_map, t_dimention dmt);
 char		get_start_point(char **map_content);

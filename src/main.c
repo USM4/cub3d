@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 10:46:05 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/15 15:23:57 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/15 19:44:53 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,18 @@ void	initialize_mlx_ingredients2(t_data *data)
 
 void	initialize_my_structs(t_data *data)
 {
-	data->val = (t_utils){.window_height = (TILE_SIZE * data->bridge.num_rows),
-		.window_width = (TILE_SIZE * data->bridge.longest_line),
+	data->val = (t_utils){.window_height = 1500,
+		.window_width = 1800,
 		.fov = (60 * (PI / 180))};
-	data->player = (t_player){.x = data->val.window_width / 2,
-		.y = data->val.window_height / 2,
+	data->player = (t_player){.x = 0,
+		.y = 0,
 		.move_step = 0,
-		.speed = 3,
+		.speed = 0.5,
 		.turn_direction = 0,
 		.walk_direction = 0,
 		.flag = 0,
 		.rotation_angle = PI / 2,
-		.rotation_speed = 5 * (PI / 180)};
+		.rotation_speed = 3 * (PI / 180)};
 	data->offset = (t_textures){0};
 	data->params = (t_draw){0};
 }
@@ -117,8 +117,49 @@ void	initialize_player_position(t_data *data)
 			break ;
 		i++;
 	}
-	data->player.x = j * TILE_SIZE;
-	data->player.y = i * TILE_SIZE;
+	data->player.x = (j * TILE_SIZE) - (TILE_SIZE / 2);
+	data->player.y = (i * TILE_SIZE) - (TILE_SIZE / 2);
+}
+
+void set_facing(t_data *data, char c)
+{
+	if (c == 'N')
+		data->player.rotation_angle = 1.5 * PI;
+	else if(c == 'S') 
+		data->player.rotation_angle = PI / 2;
+	else if(c == 'E') 
+		data->player.rotation_angle = 0;
+	else if(c == 'W') 
+		data->player.rotation_angle = PI;
+}
+
+void	initialize_player_facing(t_data *data)
+{
+	int	i;
+	int	j;
+	int	flag;
+
+	i = 0;
+	flag = 0;
+	while (data->map[i])
+	{
+		j = 0;
+		while (data->map[i][j])
+		{
+		
+			if (data->map[i][j] == 'N' || data->map[i][j] == 'S' || \
+			data->map[i][j] == 'E' || data->map[i][j] == 'W')
+			{
+				flag = 1;
+				break ;
+			}
+			j++;
+		}
+		if(flag)
+			break ;
+		i++;
+	}
+	set_facing(data, data->map[i][j]);
 }
 
 int main(int ac, char **av)
@@ -161,6 +202,7 @@ int main(int ac, char **av)
 		return (1);
 	cpy_map(&data, map_code);
 	initialize_player_position(&data);
+	initialize_player_facing(&data);
 	data.mlx = mlx_init();
 	data.mlx_new_window = mlx_new_window(data.mlx, \
 	data.val.window_width, data.val.window_height, "USM4");
