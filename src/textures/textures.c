@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 14:38:09 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/15 15:25:16 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:20:40 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ double wall_stripe_height, double wallheight)
 	{
 		from_top = data->offset.y + (wall_stripe_height / 2) \
 		- ((double)data->val.window_height / 2);
-		texture_y = (int)((double)(from_top) *\
-		(data->textures[data->offset.id].height / wall_stripe_height));
+		texture_y = (int)((double)(from_top) * (data->textures[data->offset.id].height / wall_stripe_height));
 		color = data->textures[data->offset.id].arr[((int)texture_y * \
 		data->textures[data->offset.id].width) + (int)texture_x];
 		my_mlx_pixel_put(data, i, data->offset.y, color);
@@ -77,9 +76,7 @@ double wallheight)
 		((double)data->textures[data->offset.id].width / TILE_SIZE))) % \
 		data->textures[data->offset.id].width;
 	else if (data->ray[i].flag_v)
-		data->offset.x = ((int)(data->ray[i].the_y_wallhit * \
-		((double)data->textures[data->offset.id].width \
-		/ TILE_SIZE))) % data->textures[data->offset.id].width;
+		data->offset.x = ((int)(data->ray[i].the_y_wallhit * ((double)data->textures[data->offset.id].width / TILE_SIZE))) % data->textures[data->offset.id].width;
 	puting_on_wall(data, i, wall_stripe_height, wallheight);
 }
 

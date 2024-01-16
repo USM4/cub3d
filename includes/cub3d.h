@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/15 15:25:34 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/16 15:44:42 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,4 +170,10 @@ extern void		render_game(t_data *data);
 extern int		update_render(t_data *data);
 extern void		draw_line_dda(t_data *data, double x1, double y1,
 					double x2, double y2, int color);
+extern void		initialize_mlx_ingredients2(t_data *data);
+extern void		initialize_my_structs(t_data *data);
+extern int		num_rows_counter(char **map);
+extern void		initialize_player_position(t_data *data);
+extern void		initialize_player_facing(t_data *data);
+extern void		handle_textures_failing(t_data *data);
 #endif

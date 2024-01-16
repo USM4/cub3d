@@ -6,7 +6,7 @@
 /*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 21:22:17 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/15 19:53:05 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:55:18 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,20 @@ void	render_game(t_data *data)
 
 	i = 0;
 	render_3d(data);
-	draw_scene(data);
-	draw_player(data);
-	while (i < data->val.window_width)
-	{
-		draw_line_dda(data, FACTOR * data->player.x, FACTOR * data->player.y, \
-		FACTOR * data->ray[i].the_x_wallhit, \
-		FACTOR * data->ray[i].the_y_wallhit, 0xfc6500);
-		i++;
-	}
-	draw_line_dda(data, FACTOR * (data->player.x), \
-	FACTOR * (data->player.y), FACTOR * \
-	(data->player.x + cos(data->player.rotation_angle) * 30), \
-	FACTOR * (data->player.y + \
-	sin(data->player.rotation_angle) * 30), 0xfcdb03);
+	// draw_scene(data);
+	// draw_player(data);
+	// while (i < data->val.window_width)
+	// {
+	// 	draw_line_dda(data, FACTOR * data->player.x, FACTOR * data->player.y, \
+	// 	FACTOR * data->ray[i].the_x_wallhit, \
+	// 	FACTOR * data->ray[i].the_y_wallhit, 0xfc6500);
+	// 	i++;
+	// }
+	// draw_line_dda(data, FACTOR * (data->player.x), \
+	// FACTOR * (data->player.y), FACTOR * \
+	// (data->player.x + cos(data->player.rotation_angle) * 30), \
+	// FACTOR * (data->player.y + \
+	// sin(data->player.rotation_angle) * 30), 0xfcdb03);
 }
 
 int	update_render(t_data *data)
