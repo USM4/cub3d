@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/16 15:44:42 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/17 04:03:49 by hlabouit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ typedef struct s_data
 	t_textures	offset;
 	t_textures	textures[4];
 	t_draw		params;
-	t_dimention	bridge;
+	t_elements	bridge;
 	t_utils		val;
 }	t_data;
 
@@ -176,4 +176,5 @@ extern int		num_rows_counter(char **map);
 extern void		initialize_player_position(t_data *data);
 extern void		initialize_player_facing(t_data *data);
 extern void		handle_textures_failing(t_data *data);
+extern void		mlx_failure_protection(t_data *data);
 #endif

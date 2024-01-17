@@ -6,11 +6,11 @@
 /*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 04:43:37 by hlabouit          #+#    #+#             */
-/*   Updated: 2024/01/14 02:35:03 by hlabouit         ###   ########.fr       */
+/*   Updated: 2024/01/17 02:47:21 by hlabouit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"parsing.h"
+#include "parsing.h"
 
 static int	count_words(char const *s, char c)
 {

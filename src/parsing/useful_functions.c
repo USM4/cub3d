@@ -6,11 +6,11 @@
 /*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 00:24:48 by hlabouit          #+#    #+#             */
-/*   Updated: 2024/01/14 08:11:30 by hlabouit         ###   ########.fr       */
+/*   Updated: 2024/01/17 03:10:19 by hlabouit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"parsing.h"
+#include "parsing.h"
 
 char	*join_map_content(int fd)
 {
@@ -28,21 +28,31 @@ char	*join_map_content(int fd)
 		mc_1d = ft_strjoin_prs(mc_1d, buf);
 		i = read(fd, buf, 1);
 		buf[i] = 0;
-		// if (mc_1d[0] == '\n'
-		// 	|| (mc_1d[ft_strlen_prs(mc_1d) - 1] == '\n' && buf[0] == '\n'))
-		// 	display_errors2(808);
 	}
 	if (mc_1d[ft_strlen_prs(mc_1d) - 1] == '\n')
 		display_errors2(808);
 	return (mc_1d);
 }
 
-
-char get_start_point(char **map_content)
+int	check_start_point_sides(char **map_content, int i, int j)
 {
-	int	i;
-	int	j;
-	char start_point;
+	if ((map_content[i][j] == 'N' && (map_content[i][j + 1] == '0'
+		|| map_content[i][j + 1] == '1'))
+		|| (map_content[i][j] == 'S' && (map_content[i][j + 1] == '0'
+		|| map_content[i][j + 1] == '1'))
+		|| (map_content[i][j] == 'W' && (map_content[i][j + 1] == '0'
+		|| map_content[i][j + 1] == '1'))
+		|| (map_content[i][j] == 'E' && (map_content[i][j + 1] == '0'
+		|| map_content[i][j + 1] == '1')))
+		return (1);
+	return (-1);
+}
+
+char	get_start_point(char **map_content)
+{
+	int		i;
+	int		j;
+	char	start_point;
 
 	i = 0;
 	while (map_content[i])
@@ -50,12 +60,9 @@ char get_start_point(char **map_content)
 		j = 0;
 		while (map_content[i][j])
 		{
-			if ((map_content[i][j] == 'N' && (map_content[i][j + 1] == '0' || map_content[i][j + 1] == '1'))
-				|| (map_content[i][j] == 'S' && (map_content[i][j + 1] == '0' || map_content[i][j + 1] == '1'))
-				|| (map_content[i][j] == 'W' && (map_content[i][j + 1] == '0' || map_content[i][j + 1] == '1'))
-				|| (map_content[i][j] == 'E' && (map_content[i][j + 1] == '0' || map_content[i][j + 1] == '1'))) 
+			if (check_start_point_sides(map_content, i, j) == 1)
 			{
-				start_point = map_content[i][j]; 
+				start_point = map_content[i][j];
 				return (start_point);
 			}
 			j++;
@@ -68,7 +75,7 @@ char get_start_point(char **map_content)
 
 t_dimention	get_mc_dimentios(char **map_content)
 {
-	t_dimention dmt;
+	t_dimention	dmt;
 
 	dmt.i = 0;
 	dmt.longest_line = 0;
@@ -85,4 +92,13 @@ t_dimention	get_mc_dimentios(char **map_content)
 	return (dmt);
 }
 
+void	lightweight_memory(char **tab2d)
+{
+	int i;
+
+	i = 0;
+	while(tab2d[i])
+		free(tab2d[i++]);
+	free(tab2d);
+}
 

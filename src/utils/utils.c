@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 00:19:17 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/15 15:05:21 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/17 02:38:23 by hlabouit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,15 @@ char	**allocate_the_map(t_data *data)
 	int		i;
 
 	i = 0;
-	cpy = malloc(sizeof(char *) * (data->bridge.num_rows + 1));
+	cpy = malloc(sizeof(char *) * (data->bridge.dmt.lines + 1));
 	if (!cpy)
 	{
 		perror("MALLOC FAILURE");
 		exit(1);
 	}
-	while (i < data->bridge.num_rows)
+	while (i < data->bridge.dmt.lines)
 	{
-		cpy[i] = malloc(sizeof(char) * (data->bridge.longest_line + 1));
+		cpy[i] = malloc(sizeof(char) * (data->bridge.dmt.longest_line + 1));
 		if (!cpy[i])
 		{
 			perror("MALLOC FAILURE");
@@ -74,10 +74,10 @@ void	cpy_map(t_data *data, char **map)
 
 	i = 0;
 	data->map = allocate_the_map(data);
-	while (i < data->bridge.num_rows)
+	while (i < data->bridge.dmt.lines)
 	{
 		j = 0;
-		while (j < data->bridge.longest_line)
+		while (j < data->bridge.dmt.longest_line)
 		{
 			data->map[i][j] = map[i][j];
 			j++;

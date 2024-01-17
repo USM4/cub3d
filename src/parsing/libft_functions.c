@@ -6,11 +6,11 @@
 /*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 04:42:27 by hlabouit          #+#    #+#             */
-/*   Updated: 2024/01/14 02:34:55 by hlabouit         ###   ########.fr       */
+/*   Updated: 2024/01/17 02:47:21 by hlabouit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"parsing.h"
+#include "parsing.h"
 
 int	ft_strlen_prs(char *s)
 {
@@ -48,12 +48,12 @@ char	*ft_strjoin_prs(char *s1, char *s2)
 	size_t	len;
 
 	if (!s1 || !s2)
-		return (NULL);
+		return (free(s1), NULL);
 	i = 0;
 	len = ft_strlen_prs(s1) + ft_strlen_prs(s2);
 	s1_s2 = (char *)malloc((len + 1) * sizeof(char));
 	if (!s1_s2)
-		return (NULL);
+		return (free(s1), NULL);
 	while (s1[i] && i < len)
 	{
 		s1_s2[i] = s1[i];

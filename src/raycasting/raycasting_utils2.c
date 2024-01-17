@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting_utils2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 11:41:18 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/15 19:54:53 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/17 02:39:37 by hlabouit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	loop_for_hz_intersection(t_data *data, int i)
 
 	decrement = 0;
 	while (data->ray[i].hit.next_hx >= 0 && \
-	data->ray[i].hit.next_hx <= (data->bridge.longest_line * TILE_SIZE) && \
+	data->ray[i].hit.next_hx <= (data->bridge.dmt.longest_line * TILE_SIZE) && \
 	data->ray[i].hit.next_hy >= 0 && data->ray[i].hit.next_hy \
-	<= (data->bridge.num_rows * TILE_SIZE))
+	<= (data->bridge.dmt.lines * TILE_SIZE))
 	{
 		if (data->ray[i].facing_up == 1)
 			decrement = 1;
@@ -71,9 +71,9 @@ void	loop_for_vert_intersection(t_data *data, int i)
 
 	var = 0;
 	while ((data->ray[i].hit.next_vx >= 0 && data->ray[i].hit.next_vx \
-	<= (data->bridge.longest_line * TILE_SIZE)) && \
+	<= (data->bridge.dmt.longest_line * TILE_SIZE)) && \
 	(data->ray[i].hit.next_vy >= 0 && \
-	data->ray[i].hit.next_vy <= (data->bridge.num_rows * TILE_SIZE)))
+	data->ray[i].hit.next_vy <= (data->bridge.dmt.lines * TILE_SIZE)))
 	{
 		if (data->ray[i].facing_left == 1)
 			var = 1;

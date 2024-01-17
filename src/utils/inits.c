@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:20:11 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/16 15:39:59 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/17 02:38:58 by hlabouit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ void	initialize_mlx_ingredients2(t_data *data)
 	int	tmp;
 
 	data->textures[0].n_img = mlx_xpm_file_to_image(data->mlx,
-			data->bridge.test.no_path, &data->textures[0].width, \
+			data->bridge.no_path, &data->textures[0].width, \
 			&data->textures[0].height);
 	data->textures[1].s_img = mlx_xpm_file_to_image(data->mlx,
-			data->bridge.test.so_path, &data->textures[1].width, \
+			data->bridge.so_path, &data->textures[1].width, \
 			&data->textures[1].height);
 	data->textures[2].e_img = mlx_xpm_file_to_image(data->mlx,
-			data->bridge.test.ea_path, &data->textures[2].width, \
+			data->bridge.ea_path, &data->textures[2].width, \
 			&data->textures[2].height);
 	data->textures[3].w_img = mlx_xpm_file_to_image(data->mlx,
-			data->bridge.test.we_path, &data->textures[3].width, \
+			data->bridge.we_path, &data->textures[3].width, \
 			&data->textures[3].height);
 	handle_textures_failing(data);
 	data->textures[0].arr = (uint32_t *)mlx_get_data_addr(data->textures[0] \

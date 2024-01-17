@@ -6,11 +6,11 @@
 /*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 04:41:10 by hlabouit          #+#    #+#             */
-/*   Updated: 2024/01/14 08:19:15 by hlabouit         ###   ########.fr       */
+/*   Updated: 2024/01/17 02:47:21 by hlabouit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"parsing.h"
+#include "parsing.h"
 
 int	ft_isdigit(int c)
 {

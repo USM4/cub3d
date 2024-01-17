@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 21:33:42 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/14 20:21:17 by oredoine         ###   ########.fr       */
+/*   Updated: 2024/01/17 02:40:15 by hlabouit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	draw_player(t_data *data)
 	int	j;
 
 	i = 0;
-	while (i < data->bridge.num_rows)
+	while (i < data->bridge.dmt.lines)
 	{
 		j = 0;
-		while (j < data->bridge.longest_line)
+		while (j < data->bridge.dmt.longest_line)
 		{
 			if (data->map[i][j] == 'S')
 			{
@@ -43,10 +43,10 @@ void	draw_scene(t_data *data)
 	int	j;
 
 	i = 0;
-	while (i < data->bridge.num_rows)
+	while (i < data->bridge.dmt.lines)
 	{
 		j = 0;
-		while (j < data->bridge.longest_line)
+		while (j < data->bridge.dmt.longest_line)
 		{
 			data->tile.tile_x = j * TILE_SIZE;
 			data->tile.tile_y = i * TILE_SIZE;
