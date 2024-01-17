@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inits.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:20:11 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/17 02:38:58 by hlabouit         ###   ########.fr       */
+/*   Updated: 2024/01/17 10:34:54 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ void	initialize_player_position(t_data *data)
 			break ;
 		i++;
 	}
-	data->player.x = (j * TILE_SIZE) - (TILE_SIZE / 2);
-	data->player.y = (i * TILE_SIZE) - (TILE_SIZE / 2);
+	data->player.x = (j * TILE_SIZE) + (TILE_SIZE / 2);
+	data->player.y = (i * TILE_SIZE) + (TILE_SIZE / 2);
 }
 
 void	initialize_player_facing(t_data *data)

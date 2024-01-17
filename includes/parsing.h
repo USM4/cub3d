@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 00:19:54 by hlabouit          #+#    #+#             */
-/*   Updated: 2024/01/17 04:52:22 by hlabouit         ###   ########.fr       */
+/*   Updated: 2024/01/17 11:26:43 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct t_elements
 	char			*floor_color;
 	char			*tmp;
 	char			**map_code;
+	char			**map_content;
+	char			**virtual_map;
 	t_dimention		dmt;
 	t_f_c_colors	fcc;
 }	t_elements;
@@ -65,7 +67,8 @@ void			check_map_extension(char **av);
 void			check_map_characters(char **map_content, t_dimention dmt);
 void			check_map_wall(char **virtual_map, t_dimention dmt);
 void			check_map_4sides_wall(char **virtual_map, t_dimention dmt);
-int				check_start_point_sidesnt_sides(char **map_content, int i, int j);
+int				check_start_point_sidesnt_sides(char **map_content,
+					int i, int j);
 char			get_start_point(char **map_content);
 t_dimention		get_mc_dimentios(char **map_content);
 char			**create_virtual_map(char **map_content);

@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+         #
+#    By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/16 22:21:54 by hlabouit          #+#    #+#              #
-#    Updated: 2024/01/16 23:03:54 by hlabouit         ###   ########.fr        #
+#    Updated: 2024/01/17 10:53:26 by oredoine         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Ofast #-fsanitize=address -g -O3
+CFLAGS = -Wall -Wextra -Werror -Ofast
 NAME = cub
 GREEN = \033[32m
 COLOR_OFF = \033[0m

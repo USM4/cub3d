@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   useful_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 00:24:48 by hlabouit          #+#    #+#             */
-/*   Updated: 2024/01/17 03:10:19 by hlabouit         ###   ########.fr       */
+/*   Updated: 2024/01/17 11:37:52 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,10 @@ t_dimention	get_mc_dimentios(char **map_content)
 
 void	lightweight_memory(char **tab2d)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(tab2d[i])
+	while (tab2d[i])
 		free(tab2d[i++]);
 	free(tab2d);
 }
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlabouit <hlabouit@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: oredoine <oredoine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 16:28:08 by oredoine          #+#    #+#             */
-/*   Updated: 2024/01/17 04:03:49 by hlabouit         ###   ########.fr       */
+/*   Updated: 2024/01/17 11:25:55 by oredoine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ typedef struct s_data
 	t_draw		params;
 	t_elements	bridge;
 	t_utils		val;
+	int			floor;
+	int			ceiling;
 }	t_data;
 
 extern void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
@@ -168,8 +170,8 @@ extern int		handle_keyrelease(int keycode, t_data *data);
 extern void		update_game_state(t_data *data);
 extern void		render_game(t_data *data);
 extern int		update_render(t_data *data);
-extern void		draw_line_dda(t_data *data, double x1, double y1,
-					double x2, double y2, int color);
+// extern void		draw_line_dda(t_data *data, double x1, double y1,
+// 					double x2, double y2, int color);
 extern void		initialize_mlx_ingredients2(t_data *data);
 extern void		initialize_my_structs(t_data *data);
 extern int		num_rows_counter(char **map);
