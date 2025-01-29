@@ -1,12 +1,10 @@
-NO ./assets/wall.xpm
+NO ./assets/jebha.xpm
 SO ./assets/wall1.xpm
 EA ./assets/wall2.xpm
-WE ./assets/wall3.xpm
+WE ./assets/oredoine.xpm
 
-F       150,110,12
-
-
-C        22,100,230
+F 5,0,0
+C  26, 35, 126
 
 1111111111111111111
 1000011111111111111111111
