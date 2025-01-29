@@ -1,82 +1,81 @@
-# Cub3d
-Resources:
- -> https://www.desmos.com/calculator  
- -> https://permadi.com/1996/05/ray-casting-tutorial-table-of-contents/  
- -> pikuma drive  
- **************
+# Cub3D
 
--> make a good modular makefile + add the gnl libft and mlx42 librarie  
--> read documentation of mlx42 and make prototypes to see how things work  
--> ask about the difference between mlx42 and mlx  
+## Overview
+Cub3D is a **3D game** built using **C** and **minilibX (MLX)**. It features a simple first-person perspective, utilizing **raycasting** for rendering walls and simulating depth perception.
 
-> it's really important to have good "reperage" meaning know what left right top and down means in the context of your program's map   
+## Features
+- **Raycasting engine** for 3D visualization
+- **Player movement and collision detection**
+- **Wall rendering with different colors for each face**
+- **Mini-map representation**
+- **Keyboard controls for navigation**
 
--> start by making a 2d map and try to fix collisions and ray casting  
--> raise walls with distinct color   s for each side to make things easy at the start  
--> let textures be the very last thing you add  
+## Requirements
+- A Linux-based operating system
+- GCC compiler
+- Make utility
+- MinilibX (MLX42)
+- Libft and GNL libraries
 
-# things to note
- 
--> watch pikuma videos
--> reviser les relations de : tan / cos / sin
--> les limites de tan a gauche et a droite de pi/2(use desmos.com)
+## Installation (if You have mlx in your machine)
+Clone the repository:
+```sh
+git clone https://github.com/usm4/cub3d.git
+cd cub3d
+```
 
-# DDA ALGORITHM
+## Compilation
+Use the provided **Makefile** to compile the project:
+```sh
+make
+```
+This generates an executable named **cub3d**.
 
-1- you have the current point location (x1, y1).  
-2- you take the other point head of the line location (x2, y2).  
-3- we applicate on the both points the diff operation x's with the x's and the y's with the other.  
-4- so we have *diff_x*  = (x2 - x1), and *diff_y* =(y2 - y1).
-5- to know the *steps* we take the greater from the diffs.
-6 -  the steps we use them in this operation to know how we should be increment with.  
-7 - so we do :  X_increment = diff_x / steps.  
-8 - and  we do :  Y_increment = diff_y / steps.  
-9 - so know we have to increment with the locations and round the values of the locations (if (0.5 < the number it takes the greater)).  
-10 - congrats you have the line.  
+## Usage
+Run the game with:
+```sh
+./cub3d [map.cub]
+```
+Example:
+```sh
+./cub3d big_map.cub
+```
 
-# raycasting
+## Makefile Commands
+| Command        | Description                                  |
+|---------------|----------------------------------------------|
+| `make`        | Compiles the game                           |
+| `make clean`  | Removes compiled executables and objects    |
+| `make re`     | Cleans and recompiles the project           |
 
-->check the vertical intersections to find the wall.  
--> when there is a wall on either a vertical or a horizontal intersection , the checking stops.  
+## Raycasting Algorithm Overview
+Cub3D uses **raycasting** to determine visible walls and simulate a 3D environment.
 
-![Alt text](<Screen Shot 2023-12-23 at 1.20.34 AM.png>)
+1. **Cast a ray for each column of pixels on the screen**
+2. **Check horizontal and vertical intersections with walls**
+3. **Find the closest intersection and calculate the correct wall height**
+4. **Render the walls with perspective scaling**
+5. **Apply textures (if implemented)**
 
-*********************
-->  Substract 30 degrees from the player rotaion angle (Field of view)FOV / 2.  
--> Start at column 0.  
- # Horizontal Intersections  
-  
--> Find coordinate of the first horizontal intersection (Point A)  
--> Find yStep (Tile size)  
--> Find xStep  
--> Convert intersection point (x,y) into map index [i,j]
--> If (intersection hits a wall): store horizontal hit distance ? find the next horizontal intersection  
+### DDA Algorithm (Digital Differential Analyzer)
+1. Compute differences `dx` and `dy` between start and end points.
+2. Determine the number of steps needed based on the larger difference.
+3. Increment x and y values proportionally in each step to draw a line.
 
-![Alt text](Horzontal-inter.png)  
+## Controls
+| Key            | Action            |
+|---------------|------------------|
+| `W`           | Move forward     |
+| `S`           | Move backward    |
+| `A`           | Strafe left      |
+| `D`           | Strafe right     |
+| `Arrow Left`  | Rotate left      |
+| `Arrow Right` | Rotate right     |
+| `ESC`         | Quit the game    |
 
-# Vertical intersections
+## Contributing
+Feel free to fork the repository and submit pull requests!
 
--> Same way to find steps as Horizontal ones 
--> just instead of dividing we multiplying by xStep  
+---
+**Author:** Oussama Redoine (USM4)
 
-# Distance from ray to wall hit  
-
--> Find the intersection point (point A)  
--> calculate diff_x and diff_y (xStep and yStep)
--> loop incrementing xstep horizontally and ystep vertically until we hit a wall  
--> get the both horizontal and the vertical distances and the closest one in our final distance from the ray to the wall  
--> and compare between them then choose the smallest distance
--> here is a math relation of calculating the distance between two points
-![Alt text](<Screen Shot 2024-01-03 at 3.12.05 AM.png>)
-
-
-
-S : 1
-W : 13
-A : 0
-D : 2
-
-up : 126
-down : 125
-right : 124
-left : 123
